@@ -1,0 +1,44 @@
+C51 COMPILER V9.52.0.0   TEST                                                              03/17/2019 18:18:29 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE TEST
+OBJECT MODULE PLACED IN test.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE test.c BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          #include<reg51.h>
+   2          
+   3          void delay()
+   4          {
+   5   1          unsigned int i=0,j=0;
+   6   1          for(i=0; i<10; i++)
+   7   1              for(j=0; j<21738; j++);
+   8   1      }
+   9          void main()
+  10          {
+  11   1          unsigned int i ;
+  12   1          unsigned char LED_Data;
+  13   1          while(1) {
+  14   2              LED_Data=0x01;
+  15   2              for(i=0; i<8; i++) {
+  16   3                  P3=~LED_Data;
+  17   3                  delay();
+  18   3                  LED_Data<<=1;
+  19   3              }
+  20   2          }
+  21   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     58    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
