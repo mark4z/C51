@@ -7,3 +7,110 @@ C:\Users\c\Desktop\zm\source\³ÌÐò\jtd.uvproj
 Project File Date:  03/17/2019
 
 <h2>Output:</h2>
+Rebuild target 'Target 1'
+assembling STARTUP.A51...
+compiling jtd.c...
+jtd.c(83): error C141: syntax error near 'if'
+jtd.c(83): error C141: syntax error near '!=', expected ')'
+jtd.c(85): error C231: 'display': redefinition
+jtd.c(86): error C141: syntax error near 'if'
+jtd.c(86): error C141: syntax error near '!=', expected ')'
+jtd.c(87): error C231: 'flag': redefinition
+jtd.c(88): error C231: 'TR0': redefinition
+jtd.c(88): error C231: 'TR0': redefinition
+jtd.c(89): error C231: 'flag3': redefinition
+jtd.c(90): error C231: 'TR1': redefinition
+jtd.c(90): error C231: 'TR1': redefinition
+jtd.c(91): error C279: 'sec_nb': multiple initialization
+jtd.c(91): error C231: 'sec_nb': redefinition
+jtd.c(91): error C247: non-address/-constant initializer
+jtd.c(92): error C279: 'sec_dx': multiple initialization
+jtd.c(92): error C231: 'sec_dx': redefinition
+jtd.c(92): error C247: non-address/-constant initializer
+jtd.c(94): error C141: syntax error near 'if'
+jtd.c(94): error C141: syntax error near '==', expected ')'
+jtd.c(96): error C231: 'P2': redefinition
+jtd.c(96): error C231: 'P2': redefinition
+jtd.c(97): error C231: 'Green_dx': redefinition
+jtd.c(97): error C231: 'Green_dx': redefinition
+jtd.c(98): error C231: 'Red_nb': redefinition
+jtd.c(98): error C231: 'Red_nb': redefinition
+jtd.c(99): error C279: 'sec_nb': multiple initialization
+jtd.c(99): error C247: non-address/-constant initializer
+jtd.c(100): error C141: syntax error near '}'
+jtd.c(103): error C279: 'P2': multiple initialization
+jtd.c(103): error C231: 'P2': redefinition
+jtd.c(103): error C231: 'P2': redefinition
+jtd.c(104): error C231: 'Green_nb': redefinition
+jtd.c(104): error C231: 'Green_nb': redefinition
+jtd.c(105): error C231: 'Red_dx': redefinition
+jtd.c(105): error C231: 'Red_dx': redefinition
+jtd.c(106): error C279: 'sec_dx': multiple initialization
+jtd.c(106): error C247: non-address/-constant initializer
+jtd.c(107): error C141: syntax error near '}'
+jtd.c(110): error C141: syntax error near '!=', expected ')'
+jtd.c(112): error C231: 'display': redefinition
+jtd.c(113): error C141: syntax error near 'if'
+jtd.c(113): error C141: syntax error near '!=', expected ')'
+jtd.c(114): error C279: 'flag3': multiple initialization
+jtd.c(115): error C231: 'flag5': redefinition
+jtd.c(115): error C247: non-address/-constant initializer
+jtd.c(116): error C141: syntax error near 'if'
+jtd.c(116): error C141: syntax error near '==', expected ')'
+jtd.c(117): error C279: 'TR0': multiple initialization
+jtd.c(117): error C231: 'TR0': redefinition
+jtd.c(117): error C231: 'TR0': redefinition
+jtd.c(118): error C279: 'P2': multiple initialization
+jtd.c(118): error C231: 'P2': redefinition
+jtd.c(118): error C231: 'P2': redefinition
+jtd.c(119): error C279: 'Red_dx': multiple initialization
+jtd.c(119): error C231: 'Red_dx': redefinition
+jtd.c(119): error C231: 'Red_dx': redefinition
+jtd.c(120): error C279: 'Red_nb': multiple initialization
+jtd.c(120): error C231: 'Red_nb': redefinition
+jtd.c(120): error C231: 'Red_nb': redefinition
+jtd.c(120): error C141: syntax error near '}'
+jtd.c(121): error C141: syntax error near '==', expected ')'
+jtd.c(122): error C279: 'TR0': multiple initialization
+jtd.c(122): error C231: 'TR0': redefinition
+jtd.c(122): error C231: 'TR0': redefinition
+jtd.c(123): error C279: 'P2': multiple initialization
+jtd.c(123): error C231: 'P2': redefinition
+jtd.c(123): error C231: 'P2': redefinition
+jtd.c(124): error C279: 'Green_dx': multiple initialization
+jtd.c(124): error C231: 'Green_dx': redefinition
+jtd.c(124): error C231: 'Green_dx': redefinition
+jtd.c(125): error C279: 'Red_nb': multiple initialization
+jtd.c(125): error C231: 'Red_nb': redefinition
+jtd.c(125): error C231: 'Red_nb': redefinition
+jtd.c(126): error C279: 'sec_dx': multiple initialization
+jtd.c(126): error C247: non-address/-constant initializer
+jtd.c(127): error C279: 'sec_nb': multiple initialization
+jtd.c(127): error C247: non-address/-constant initializer
+jtd.c(127): error C141: syntax error near '}'
+jtd.c(130): error C231: 'display': redefinition
+jtd.c(131): error C141: syntax error near '}'
+jtd.c(132): error C141: syntax error near '!=', expected ')'
+jtd.c(135): error C141: syntax error near '!=', expected ')'
+jtd.c(137): error C231: 'display': redefinition
+jtd.c(138): error C141: syntax error near 'if'
+jtd.c(138): error C141: syntax error near '!=', expected ')'
+jtd.c(140): error C279: 'TR0': multiple initialization
+jtd.c(140): error C231: 'TR0': redefinition
+jtd.c(140): error C231: 'TR0': redefinition
+jtd.c(141): error C279: 'P2': multiple initialization
+jtd.c(141): error C231: 'P2': redefinition
+jtd.c(141): error C231: 'P2': redefinition
+jtd.c(142): error C279: 'flag3': multiple initialization
+jtd.c(143): error C279: 'sec_dx': multiple initialization
+jtd.c(144): error C279: 'sec_nb': multiple initialization
+jtd.c(145): error C141: syntax error near 'do'
+jtd.c(147): error C231: 'display': redefinition
+jtd.c(148): error C141: syntax error near '}'
+jtd.c(149): error C141: syntax error near '!=', expected ')'
+jtd.c(152): error C141: syntax error near '!=', expected ')'
+jtd.c(154): error C231: 'display': redefinition
+jtd.c(155): error C141: syntax error near 'if'
+jtd.c(155): error C141: syntax error near '!=', expected ')'
+jtd.c(157): error C129: missing ';' before '++'
+Target not created

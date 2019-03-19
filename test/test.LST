@@ -1,4 +1,4 @@
-C51 COMPILER V9.52.0.0   TEST                                                              03/17/2019 20:25:23 PAGE 1   
+C51 COMPILER V9.52.0.0   TEST                                                              03/19/2019 18:01:32 PAGE 1   
 
 
 C51 COMPILER V9.52.0.0, COMPILATION OF MODULE TEST
@@ -8,51 +8,107 @@ COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE test.c BROWSE DEBUG OBJECTEXTEND TA
 line level    source
 
    1          #include<reg51.h>
-   2          sbit A1=P1^1;
-   3          sbit B1=P1^0;
-   4          void delay() {
-   5   1          unsigned int i=0,j=0;
-   6   1          for(i=0; i<1; i++)
-   7   1              for(j=0; j<21738; j++);
-   8   1      }
-   9          void delay2() {
-  10   1          unsigned int i=0,j=0;
-  11   1          for(i=0; i<1; i++)
-  12   1              for(j=0; j<8000; j++);
-  13   1      }
-  14          void main() {
-  15   1          char code table[]= {0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90};
-  16   1          unsigned int i ,j;
-  17   1          int shi,ge;
-  18   1          while(1) {
-  19   2              for (i=60; i>0; i--) {
-  20   3                  P3=0xff;
-  21   3                  shi=i/10;
-  22   3                  ge=i%10;
-  23   3                  P3=table[ge];
-  24   3                  A1=1;
-  25   3                  delay2();
-  26   3                  A1=0;
-  27   3                  P3=0xff;
-  28   3                  P3=table[shi];
-  29   3                  B1=1;
-  30   3                  delay2();
-  31   3                  B1=0;
-  32   3              }
-  33   2          }
-  34   1      }
-*** WARNING C280 IN LINE 16 OF test.c: 'j': unreferenced local variable
+   2          #define uchar unsigned char
+   3          #define uint unsigned int
+   4          sbit A1 = P1 ^ 1;
+   5          sbit B1 = P1 ^ 0;
+   6          uint time = 10;
+   7          uint count = 20;
+   8          uint flag = 0;
+   9          char code LED[] = {0xc0, 0xf9, 0xa4, 0xb0, 0x99, 0x92, 0x82, 0xf8, 0x80, 0x90};
+  10          void delay(int ms)    //延时子程序
+  11          {
+  12   1          uint j, k;
+  13   1          for (j = 0; j < ms; j++)      //延时ms
+  14   1              for (k = 0; k < 124; k++)
+  15   1                  ;   //大约1毫秒的延时
+  16   1      }
+  17          void display();
+  18          
+  19          void init()
+  20          {
+  21   1          EA = 1;
+  22   1          TMOD = 0x01;
+  23   1          ET0 = 1;            //定时器0中断开启
+  24   1          TH0 = 0x4c;
+  25   1          TL0 = 0x00;
+  26   1          TR0 = 1;
+  27   1          TF0 = 0;
+  28   1      }
+  29          void init2()
+  30          {
+  31   1          TMOD = 0x20;
+  32   1          SCON = 0x50;
+  33   1          PCON = 0x00;
+  34   1          TL1 = 0xFD;
+  35   1          TH1 = 0xFD;
+  36   1          TR1 = 1;
+  37   1          EA = 1;
+  38   1          ES = 1;
+  39   1      }
+  40          
+  41          void main()
+  42          {
+  43   1          init2();
+  44   1          while(1) {
+  45   2              display();
+  46   2              if(flag == 1) {
+  47   3                  ES = 0;
+  48   3                  flag = 0;
+  49   3                  SBUF = time;
+  50   3                  TI=0;
+  51   3              }
+  52   2          }
+  53   1      }
+  54          
+  55          void display() //显示子程序
+C51 COMPILER V9.52.0.0   TEST                                                              03/19/2019 18:01:32 PAGE 2   
+
+  56          {
+  57   1          A1 = 1;
+  58   1          P0 = LED[time % 10];
+  59   1          delay(1);
+  60   1          A1 = 0;
+  61   1          B1 = 1;
+  62   1          P0 = LED[time / 10];
+  63   1          delay(1);
+  64   1          B1 = 0;
+  65   1      }
+  66          
+  67          void testinter() interrupt 1
+  68          {
+  69   1      
+  70   1          TH0 = 0x4c;
+  71   1          TL0 = 0x00;
+  72   1          if(count < 20) {
+  73   2              count++;
+  74   2          } else {
+  75   2              count = 0;
+  76   2              if(time > 0) {
+  77   3                  time--;
+  78   3              } else {
+  79   3                  time = 10;
+  80   3              }
+  81   2          }
+  82   1      }
+  83          void serial() interrupt 4
+  84          {
+  85   1          time = SBUF;
+  86   1          P0 = time;
+  87   1          RI = 0;
+  88   1          flag = 1;
+  89   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    155    ----
+   CODE SIZE        =    261    ----
    CONSTANT SIZE    =     10    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =   ----       6
+   DATA SIZE        =      6    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
 
 
-C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
