@@ -1,4 +1,4 @@
-C51 COMPILER V9.52.0.0   TEST                                                              03/19/2019 18:01:32 PAGE 1   
+C51 COMPILER V9.52.0.0   TEST                                                              03/19/2019 23:14:11 PAGE 1   
 
 
 C51 COMPILER V9.52.0.0, COMPILATION OF MODULE TEST
@@ -12,12 +12,12 @@ line level    source
    3          #define uint unsigned int
    4          sbit A1 = P1 ^ 1;
    5          sbit B1 = P1 ^ 0;
-   6          uint time = 10;
-   7          uint count = 20;
-   8          uint flag = 0;
-   9          char code LED[] = {0xc0, 0xf9, 0xa4, 0xb0, 0x99, 0x92, 0x82, 0xf8, 0x80, 0x90};
-  10          void delay(int ms)    //延时子程序
-  11          {
+   6          sbit BU = P1 ^2;
+   7          uint time = 10;
+   8          uint count = 20;
+   9          uint flag = 0;
+  10          char code LED[] = {0xc0, 0xf9, 0xa4, 0xb0, 0x99, 0x92, 0x82, 0xf8, 0x80, 0x90};
+  11          void delay(int ms) {  //延时子程序
   12   1          uint j, k;
   13   1          for (j = 0; j < ms; j++)      //延时ms
   14   1              for (k = 0; k < 124; k++)
@@ -25,84 +25,100 @@ line level    source
   16   1      }
   17          void display();
   18          
-  19          void init()
-  20          {
-  21   1          EA = 1;
-  22   1          TMOD = 0x01;
-  23   1          ET0 = 1;            //定时器0中断开启
-  24   1          TH0 = 0x4c;
-  25   1          TL0 = 0x00;
-  26   1          TR0 = 1;
-  27   1          TF0 = 0;
-  28   1      }
-  29          void init2()
-  30          {
-  31   1          TMOD = 0x20;
-  32   1          SCON = 0x50;
-  33   1          PCON = 0x00;
-  34   1          TL1 = 0xFD;
-  35   1          TH1 = 0xFD;
-  36   1          TR1 = 1;
-  37   1          EA = 1;
-  38   1          ES = 1;
-  39   1      }
-  40          
-  41          void main()
-  42          {
-  43   1          init2();
-  44   1          while(1) {
-  45   2              display();
-  46   2              if(flag == 1) {
-  47   3                  ES = 0;
-  48   3                  flag = 0;
-  49   3                  SBUF = time;
-  50   3                  TI=0;
-  51   3              }
-  52   2          }
-  53   1      }
+  19          void init() {
+  20   1          EA = 1;
+  21   1          TMOD = 0x01;
+  22   1          ET0 = 1;            //定时器0中断开启
+  23   1          TH0 = 0x4c;
+  24   1          TL0 = 0x00;
+  25   1          TR0 = 1;
+  26   1          TF0 = 0;
+  27   1      }
+  28          void init2() {
+  29   1          TMOD = 0x20;
+  30   1          SCON = 0x50;
+  31   1          PCON = 0x00;
+  32   1          TL1 = 0xFD;
+  33   1          TH1 = 0xFD;
+  34   1          TR1 = 1;
+  35   1          EA = 1;
+  36   1          ES = 1;
+  37   1      }
+  38          
+  39          void sendChar(uchar Value)
+  40          {  
+  41   1           SBUF = Value;       
+  42   1           flag = 1;
+  43   1           while(flag);
+  44   1      }  
+  45          
+  46          void sendAll(uchar *pValue)
+  47          {  
+  48   1          while((*pValue) != '\0')  
+  49   1          {  
+  50   2              sendChar(*pValue);      
+  51   2              pValue++;               
+  52   2          }  
+  53   1      }  
   54          
-  55          void display() //显示子程序
-C51 COMPILER V9.52.0.0   TEST                                                              03/19/2019 18:01:32 PAGE 2   
+  55          void main() {
+C51 COMPILER V9.52.0.0   TEST                                                              03/19/2019 23:14:11 PAGE 2   
 
-  56          {
-  57   1          A1 = 1;
-  58   1          P0 = LED[time % 10];
-  59   1          delay(1);
-  60   1          A1 = 0;
-  61   1          B1 = 1;
-  62   1          P0 = LED[time / 10];
-  63   1          delay(1);
-  64   1          B1 = 0;
-  65   1      }
-  66          
-  67          void testinter() interrupt 1
-  68          {
-  69   1      
-  70   1          TH0 = 0x4c;
-  71   1          TL0 = 0x00;
-  72   1          if(count < 20) {
-  73   2              count++;
-  74   2          } else {
-  75   2              count = 0;
-  76   2              if(time > 0) {
-  77   3                  time--;
-  78   3              } else {
-  79   3                  time = 10;
-  80   3              }
-  81   2          }
-  82   1      }
-  83          void serial() interrupt 4
-  84          {
-  85   1          time = SBUF;
-  86   1          P0 = time;
-  87   1          RI = 0;
-  88   1          flag = 1;
-  89   1      }
+  56   1          init2();
+  57   1          while(1) {
+  58   2              display();
+  59   2              if(BU==0)
+  60   2                {
+  61   3                  while(!BU){sendAll("hello world!");}
+  62   3      }
+  63   2          }
+  64   1      }
+  65          
+  66          void display() { //显示子程序
+  67   1          A1 = 1;
+  68   1          P0 = LED[time % 10];
+  69   1          delay(1);
+  70   1          A1 = 0;
+  71   1          B1 = 1;
+  72   1          P0 = LED[time / 10];
+  73   1          delay(1);
+  74   1          B1 = 0;
+  75   1      }
+  76          
+  77          void testinter() {
+  78   1      
+  79   1          TH0 = 0x4c;
+  80   1          TL0 = 0x00;
+  81   1          if(count < 20) {
+  82   2              count++;
+  83   2          } else {
+  84   2              count = 0;
+  85   2              if(time > 0) {
+  86   3                  time--;
+  87   3              } else {
+  88   3                  time = 10;
+  89   3              }
+  90   2          }
+  91   1      }
+  92          void serial() interrupt  4 {
+  93   1          if(RI)            
+  94   1          {  
+  95   2              RI = 0;
+  96   2              P0=SBUF;   
+  97   2              flag=1;
+  98   2          }  
+  99   1            
+ 100   1          if(TI)  
+ 101   1          {  
+ 102   2              TI = 0;
+ 103   2              flag = 0;  
+ 104   2          }  
+ 105   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    261    ----
-   CONSTANT SIZE    =     10    ----
+   CODE SIZE        =    276    ----
+   CONSTANT SIZE    =     23    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =      6    ----

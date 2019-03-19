@@ -3,12 +3,12 @@
 #define uint unsigned int
 sbit A1 = P1 ^ 1;
 sbit B1 = P1 ^ 0;
+sbit BU = P1 ^2;
 uint time = 10;
 uint count = 20;
 uint flag = 0;
 char code LED[] = {0xc0, 0xf9, 0xa4, 0xb0, 0x99, 0x92, 0x82, 0xf8, 0x80, 0x90};
-void delay(int ms)		//延时子程序
-{
+void delay(int ms) {	//延时子程序
     uint j, k;
     for (j = 0; j < ms; j++)			//延时ms
         for (k = 0; k < 124; k++)
@@ -16,8 +16,7 @@ void delay(int ms)		//延时子程序
 }
 void display();
 
-void init()
-{
+void init() {
     EA = 1;
     TMOD = 0x01;
     ET0 = 1;						//定时器0中断开启
@@ -26,8 +25,7 @@ void init()
     TR0 = 1;
     TF0 = 0;
 }
-void init2()
-{
+void init2() {
     TMOD = 0x20;
     SCON = 0x50;
     PCON = 0x00;
@@ -38,22 +36,34 @@ void init2()
     ES = 1;
 }
 
-void main()
-{
+void sendChar(uchar Value)
+{  
+     SBUF = Value;       
+     flag = 1;
+     while(flag);
+}  
+
+void sendAll(uchar *pValue)
+{  
+    while((*pValue) != '\0')  
+    {  
+        sendChar(*pValue);      
+        pValue++;               
+    }  
+}  
+
+void main() {
     init2();
     while(1) {
         display();
-        if(flag == 1) {
-            ES = 0;
-            flag = 0;
-            SBUF = time;
-						TI=0;
-        }
+        if(BU==0)
+					{
+						while(!BU){sendAll("hello world!");}
+}
     }
 }
 
-void display() //显示子程序
-{
+void display() { //显示子程序
     A1 = 1;
     P0 = LED[time % 10];
     delay(1);
@@ -64,8 +74,7 @@ void display() //显示子程序
     B1 = 0;
 }
 
-void testinter() interrupt 1
-{
+void testinter() {
 
     TH0 = 0x4c;
     TL0 = 0x00;
@@ -80,10 +89,17 @@ void testinter() interrupt 1
         }
     }
 }
-void serial() interrupt 4
-{
-    time = SBUF;
-    P0 = time;
-    RI = 0;
-    flag = 1;
+void serial() interrupt  4 {
+    if(RI)            
+    {  
+        RI = 0;
+        P0=SBUF;   
+        flag=1;
+    }  
+      
+    if(TI)  
+    {  
+        TI = 0;
+        flag = 0;  
+    }  
 }
