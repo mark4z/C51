@@ -1,4 +1,4 @@
-C51 COMPILER V9.52.0.0   MAIN                                                              03/21/2019 00:16:53 PAGE 1   
+C51 COMPILER V9.52.0.0   MAIN                                                              03/21/2019 00:35:21 PAGE 1   
 
 
 C51 COMPILER V9.52.0.0, COMPILATION OF MODULE MAIN
@@ -62,7 +62,7 @@ line level    source
   53          {
   54   1          //¿ª×ÜÖÐ¶Ï
   55   1          EA = 1;
-C51 COMPILER V9.52.0.0   MAIN                                                              03/21/2019 00:16:53 PAGE 2   
+C51 COMPILER V9.52.0.0   MAIN                                                              03/21/2019 00:35:21 PAGE 2   
 
   56   1          ET0 = 1;      //¿ª¶¨Ê±Æ÷0
   57   1          //¶¨Ê±Æ÷0
@@ -126,7 +126,7 @@ line level    source
  115   2          Red_SN=Open;
  116   2        }
  117   1        else{
-C51 COMPILER V9.52.0.0   MAIN                                                              03/21/2019 00:16:53 PAGE 3   
+C51 COMPILER V9.52.0.0   MAIN                                                              03/21/2019 00:35:21 PAGE 3   
 
  118   2          //¶«Î÷·½Ïò½ûÐÐ  ºìµÆÁÁ
  119   2          EW_flash=!Open; //¹Ø±Õ»ÆµÆ
@@ -164,44 +164,46 @@ line level    source
  151   1          {
  152   2            //Ã¿Ãë¼ì²âÒ»´Î£¬¹éÁãºóÖØÖÃ£¬²¢ÇÐ»»Í¨ÐÐ·½Ïò
  153   2              time0_count = 0;
- 154   2              if(EW_time_now > 0) {
- 155   3                  SN_time_now--;
- 156   3                  EW_time_now--;
- 157   3                 if(SN_time_now<=0)
- 158   3                   {
- 159   4                     SN_time_now=EW_time_now;
- 160   4                  }
- 161   3              } else {
- 162   3                  SN_time_now = SN_time_default;
- 163   3                  EW_time_now = EW_time_default;
- 164   3                  SN_or_EW=!SN_or_EW;
- 165   3              }
- 166   2            }
- 167   1      }
- 168          
- 169          void delay(int ms)      //ÑÓÊ±×Ó³ÌÐò
- 170          {
- 171   1          unsigned int j, k;
- 172   1          for (j = 0; j < ms; j++)
- 173   1              for (k = 0; k < 124; k++)
- 174   1                  ;
- 175   1      }
- 176          
- 177          void Timer0Init()   //50ºÁÃë@11.0592MHz
- 178          {
- 179   1          TMOD = 0x01;  //ÉèÖÃ¶¨Ê±Æ÷Ä£Ê½
-C51 COMPILER V9.52.0.0   MAIN                                                              03/21/2019 00:16:53 PAGE 4   
+ 154   2            //¶«Î÷Í¨ÐÐÊ
+ 155   2              if(EW_time_now > 0) {
+ 156   3                  SN_time_now--;
+ 157   3                  EW_time_now--;
+ 158   3                 if(SN_time_now<=0)
+ 159   3                   {
+ 160   4                     if(SN_or_EW){
+ 161   5                        SN_time_now=EW_time_now;}
+ 162   4                     }else{EW_time_now=SN_time_now;}
+ 163   3              } else {
+ 164   3                  SN_time_now = SN_time_default;
+ 165   3                  EW_time_now = EW_time_default;
+ 166   3                  SN_or_EW=!SN_or_EW;
+ 167   3              }
+ 168   2            }
+ 169   1      }
+ 170          
+ 171          void delay(int ms)      //ÑÓÊ±×Ó³ÌÐò
+ 172          {
+ 173   1          unsigned int j, k;
+ 174   1          for (j = 0; j < ms; j++)
+ 175   1              for (k = 0; k < 124; k++)
+ 176   1                  ;
+ 177   1      }
+ 178          
+ 179          void Timer0Init()   //50ºÁÃë@11.0592MHz
+C51 COMPILER V9.52.0.0   MAIN                                                              03/21/2019 00:35:21 PAGE 4   
 
- 180   1          TL0 = 0x00;   //ÉèÖÃ¶¨Ê±³õÖµ
- 181   1          TH0 = 0x4C;   //ÉèÖÃ¶¨Ê±³õÖµ
- 182   1          TF0 = 0;      //Çå³ýTF0±êÖ¾
- 183   1          TR0 = 1;      //¶¨Ê±Æ÷0¿ªÊ¼¼ÆÊ±
- 184   1      }
- 185          
+ 180          {
+ 181   1          TMOD = 0x01;  //ÉèÖÃ¶¨Ê±Æ÷Ä£Ê½
+ 182   1          TL0 = 0x00;   //ÉèÖÃ¶¨Ê±³õÖµ
+ 183   1          TH0 = 0x4C;   //ÉèÖÃ¶¨Ê±³õÖµ
+ 184   1          TF0 = 0;      //Çå³ýTF0±êÖ¾
+ 185   1          TR0 = 1;      //¶¨Ê±Æ÷0¿ªÊ¼¼ÆÊ±
+ 186   1      }
+ 187          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    621    ----
+   CODE SIZE        =    634    ----
    CONSTANT SIZE    =     10    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

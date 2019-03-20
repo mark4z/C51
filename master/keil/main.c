@@ -151,13 +151,15 @@ void LED_light() //µ¹¼ÆÊ±
 		{
 			//Ã¿Ãë¼ì²âÒ»´Î£¬¹éÁãºóÖØÖÃ£¬²¢ÇÐ»»Í¨ÐÐ·½Ïò
         time0_count = 0;
+			//¶«Î÷Í¨ÐÐÊ
         if(EW_time_now > 0) {
             SN_time_now--;
 					  EW_time_now--;
 					 if(SN_time_now<=0)
 						 {
-							 SN_time_now=EW_time_now;
-						}
+							 if(SN_or_EW){
+									SN_time_now=EW_time_now;}
+						   }else{EW_time_now=SN_time_now;}
         } else {
             SN_time_now = SN_time_default;
 					  EW_time_now = EW_time_default;
