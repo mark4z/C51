@@ -1,4 +1,4 @@
-C51 COMPILER V9.52.0.0   TEST                                                              03/19/2019 23:14:11 PAGE 1   
+C51 COMPILER V9.52.0.0   TEST                                                              03/20/2019 09:43:13 PAGE 1   
 
 
 C51 COMPILER V9.52.0.0, COMPILATION OF MODULE TEST
@@ -12,112 +12,129 @@ line level    source
    3          #define uint unsigned int
    4          sbit A1 = P1 ^ 1;
    5          sbit B1 = P1 ^ 0;
-   6          sbit BU = P1 ^2;
+   6          sbit BU = P1 ^ 2;
    7          uint time = 10;
    8          uint count = 20;
    9          uint flag = 0;
   10          char code LED[] = {0xc0, 0xf9, 0xa4, 0xb0, 0x99, 0x92, 0x82, 0xf8, 0x80, 0x90};
-  11          void delay(int ms) {  //延时子程序
-  12   1          uint j, k;
-  13   1          for (j = 0; j < ms; j++)      //延时ms
-  14   1              for (k = 0; k < 124; k++)
-  15   1                  ;   //大约1毫秒的延时
-  16   1      }
-  17          void display();
-  18          
-  19          void init() {
-  20   1          EA = 1;
-  21   1          TMOD = 0x01;
-  22   1          ET0 = 1;            //定时器0中断开启
-  23   1          TH0 = 0x4c;
-  24   1          TL0 = 0x00;
-  25   1          TR0 = 1;
-  26   1          TF0 = 0;
-  27   1      }
-  28          void init2() {
-  29   1          TMOD = 0x20;
-  30   1          SCON = 0x50;
-  31   1          PCON = 0x00;
-  32   1          TL1 = 0xFD;
-  33   1          TH1 = 0xFD;
-  34   1          TR1 = 1;
-  35   1          EA = 1;
-  36   1          ES = 1;
-  37   1      }
-  38          
-  39          void sendChar(uchar Value)
-  40          {  
-  41   1           SBUF = Value;       
-  42   1           flag = 1;
-  43   1           while(flag);
-  44   1      }  
-  45          
-  46          void sendAll(uchar *pValue)
-  47          {  
-  48   1          while((*pValue) != '\0')  
-  49   1          {  
-  50   2              sendChar(*pValue);      
-  51   2              pValue++;               
-  52   2          }  
-  53   1      }  
-  54          
-  55          void main() {
-C51 COMPILER V9.52.0.0   TEST                                                              03/19/2019 23:14:11 PAGE 2   
+  11          void delay(int ms)    //延时子程序
+  12          {
+  13   1          uint j, k;
+  14   1          for (j = 0; j < ms; j++)      //延时ms
+  15   1              for (k = 0; k < 124; k++)
+  16   1                  ;   //大约1毫秒的延时
+  17   1      }
+  18          void Delay10us()    //@11.0592MHz
+  19          {
+  20   1          unsigned char i;
+  21   1      
+  22   1          i = 35;
+  23   1          while (--i);
+  24   1      }
+  25          
+  26          
+  27          
+  28          void display();
+  29          
+  30          void init()
+  31          {
+  32   1          EA = 1;
+  33   1          TMOD = 0x01;
+  34   1          ET0 = 1;            //定时器0中断开启
+  35   1          TH0 = 0x4c;
+  36   1          TL0 = 0x00;
+  37   1          TR0 = 1;
+  38   1          TF0 = 0;
+  39   1      }
+  40          void init2()
+  41          {
+  42   1          TMOD = 0x20;
+  43   1          SCON = 0x50;
+  44   1          PCON = 0x00;
+  45   1          TL1 = 0xFD;
+  46   1          TH1 = 0xFD;
+  47   1          TR1 = 1;
+  48   1          EA = 1;
+  49   1          ES = 1;
+  50   1      }
+  51          
+  52          void sendChar(uchar Value)
+  53          {
+  54   1          SBUF = Value;
+  55   1          flag = 1;
+C51 COMPILER V9.52.0.0   TEST                                                              03/20/2019 09:43:13 PAGE 2   
 
-  56   1          init2();
-  57   1          while(1) {
-  58   2              display();
-  59   2              if(BU==0)
-  60   2                {
-  61   3                  while(!BU){sendAll("hello world!");}
-  62   3      }
-  63   2          }
-  64   1      }
-  65          
-  66          void display() { //显示子程序
-  67   1          A1 = 1;
-  68   1          P0 = LED[time % 10];
-  69   1          delay(1);
-  70   1          A1 = 0;
-  71   1          B1 = 1;
-  72   1          P0 = LED[time / 10];
-  73   1          delay(1);
-  74   1          B1 = 0;
-  75   1      }
-  76          
-  77          void testinter() {
-  78   1      
-  79   1          TH0 = 0x4c;
-  80   1          TL0 = 0x00;
-  81   1          if(count < 20) {
-  82   2              count++;
-  83   2          } else {
-  84   2              count = 0;
-  85   2              if(time > 0) {
-  86   3                  time--;
-  87   3              } else {
-  88   3                  time = 10;
-  89   3              }
-  90   2          }
-  91   1      }
-  92          void serial() interrupt  4 {
-  93   1          if(RI)            
-  94   1          {  
-  95   2              RI = 0;
-  96   2              P0=SBUF;   
-  97   2              flag=1;
-  98   2          }  
-  99   1            
- 100   1          if(TI)  
- 101   1          {  
- 102   2              TI = 0;
- 103   2              flag = 0;  
- 104   2          }  
- 105   1      }
+  56   1          while(flag);
+  57   1      }
+  58          
+  59          void sendAll(uchar *pValue)
+  60          {
+  61   1          while((*pValue) != '\0') {
+  62   2              sendChar(*pValue);
+  63   2              pValue++;
+  64   2          }
+  65   1      }
+  66          
+  67          void main()
+  68          {
+  69   1          init2();
+  70   1          while(1) {
+  71   2              display();
+  72   2              if(BU==0) {
+  73   3                  Delay10us();
+  74   3                      sendAll("hello world!");
+  75   3                      time=20;
+  76   3              }
+  77   2          }
+  78   1      }
+  79          
+  80          void display()   //显示子程序
+  81          {
+  82   1          A1 = 1;
+  83   1          P0 = LED[time % 10];
+  84   1          delay(1);
+  85   1          A1 = 0;
+  86   1          B1 = 1;
+  87   1          P0 = LED[time / 10];
+  88   1          delay(1);
+  89   1          B1 = 0;
+  90   1      }
+  91          
+  92          void testinter()
+  93          {
+  94   1      
+  95   1          TH0 = 0x4c;
+  96   1          TL0 = 0x00;
+  97   1          if(count < 20) {
+  98   2              count++;
+  99   2          } else {
+ 100   2              count = 0;
+ 101   2              if(time > 0) {
+ 102   3                  time--;
+ 103   3              } else {
+ 104   3                  time = 10;
+ 105   3              }
+ 106   2          }
+ 107   1      }
+ 108          void serial() interrupt  4
+ 109          {
+ 110   1          if(RI) {
+ 111   2              RI = 0;
+ 112   2              P0 = SBUF;
+ 113   2              flag = 1;
+ 114   2          }
+ 115   1      
+ 116   1          if(TI) {
+ 117   2              TI = 0;
+C51 COMPILER V9.52.0.0   TEST                                                              03/20/2019 09:43:13 PAGE 3   
+
+ 118   2              flag = 0;
+ 119   2          }
+ 120   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    276    ----
+   CODE SIZE        =    287    ----
    CONSTANT SIZE    =     23    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

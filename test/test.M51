@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22                                                        03/19/2019  23:14:11  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22                                                        03/20/2019  09:43:13  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
@@ -29,21 +29,22 @@ LINK MAP OF MODULE:  test (?C_STARTUP)
 
             * * * * * * *   C O D E   M E M O R Y   * * * * * * *
             CODE    0000H     0003H     ABSOLUTE     
-            CODE    0003H     001AH     UNIT         ?PR?SERIAL?TEST
-                    001DH     0006H                  *** GAP ***
+            CODE    0003H     001DH     UNIT         ?PR?MAIN?TEST
+                    0020H     0003H                  *** GAP ***
             CODE    0023H     0003H     ABSOLUTE     
             CODE    0026H     008CH     UNIT         ?C_C51STARTUP
             CODE    00B2H     006EH     UNIT         ?C?LIB_CODE
             CODE    0120H     003AH     UNIT         ?PR?TESTINTER?TEST
             CODE    015AH     0035H     UNIT         ?PR?DISPLAY?TEST
             CODE    018FH     002AH     UNIT         ?PR?_DELAY?TEST
-            CODE    01B9H     0017H     UNIT         ?PR?MAIN?TEST
-            CODE    01D0H     0017H     UNIT         ?CO?TEST
-            CODE    01E7H     0016H     UNIT         ?PR?INIT2?TEST
-            CODE    01FDH     0013H     UNIT         ?PR?_SENDALL?TEST
-            CODE    0210H     0012H     UNIT         ?PR?INIT?TEST
-            CODE    0222H     000FH     UNIT         ?PR?_SENDCHAR?TEST
-            CODE    0231H     000DH     UNIT         ?C_INITSEG
+            CODE    01B9H     001AH     UNIT         ?PR?SERIAL?TEST
+            CODE    01D3H     0017H     UNIT         ?CO?TEST
+            CODE    01EAH     0016H     UNIT         ?PR?INIT2?TEST
+            CODE    0200H     0013H     UNIT         ?PR?_SENDALL?TEST
+            CODE    0213H     0012H     UNIT         ?PR?INIT?TEST
+            CODE    0225H     000FH     UNIT         ?PR?_SENDCHAR?TEST
+            CODE    0234H     000DH     UNIT         ?C_INITSEG
+            CODE    0241H     0005H     UNIT         ?PR?DELAY10US?TEST
 
 
 
@@ -58,11 +59,12 @@ SEGMENT
   +--> ?C_INITSEG
 
 ?PR?MAIN?TEST
+BL51 BANKED LINKER/LOCATER V6.22                                                      03/20/2019  09:43:13  PAGE 2
+
+
   +--> ?PR?INIT2?TEST
-BL51 BANKED LINKER/LOCATER V6.22                                                      03/19/2019  23:14:11  PAGE 2
-
-
   +--> ?PR?DISPLAY?TEST
+  +--> ?PR?DELAY10US?TEST
   +--> ?CO?TEST
   +--> ?PR?_SENDALL?TEST
 
@@ -117,11 +119,11 @@ SYMBOL TABLE OF MODULE:  test (?C_STARTUP)
   -------         MODULE        TEST
   C:0000H         SYMBOL        _ICE_DUMMY_
   D:0080H         PUBLIC        P0
+BL51 BANKED LINKER/LOCATER V6.22                                                      03/20/2019  09:43:13  PAGE 3
+
+
   D:0090H         PUBLIC        P1
-  C:0003H         PUBLIC        serial
-BL51 BANKED LINKER/LOCATER V6.22                                                      03/19/2019  23:14:11  PAGE 3
-
-
+  C:01B9H         PUBLIC        serial
   B:00A8H.7       PUBLIC        EA
   C:0199H         PUBLIC        _delay
   B:0090H.2       PUBLIC        BU
@@ -129,32 +131,33 @@ SYMBOL TABLE OF MODULE:  test (?C_STARTUP)
   B:0098H.0       PUBLIC        RI
   D:0008H         PUBLIC        flag
   B:0098H.1       PUBLIC        TI
-  C:01B9H         PUBLIC        main
+  C:0003H         PUBLIC        main
   D:000AH         PUBLIC        count
-  C:0222H         PUBLIC        _sendChar
+  C:0225H         PUBLIC        _sendChar
   D:000CH         PUBLIC        time
   D:0099H         PUBLIC        SBUF
   D:0087H         PUBLIC        PCON
   D:0098H         PUBLIC        SCON
   D:0089H         PUBLIC        TMOD
-  C:0210H         PUBLIC        init
-  C:01FDH         PUBLIC        _sendAll
+  C:0213H         PUBLIC        init
+  C:0241H         PUBLIC        Delay10us
+  C:0200H         PUBLIC        _sendAll
   B:00A8H.1       PUBLIC        ET0
   B:0088H.5       PUBLIC        TF0
   D:008CH         PUBLIC        TH0
   D:008DH         PUBLIC        TH1
   D:008AH         PUBLIC        TL0
   D:008BH         PUBLIC        TL1
-  C:01DDH         PUBLIC        LED
+  C:01E0H         PUBLIC        LED
   B:0088H.4       PUBLIC        TR0
   B:0088H.6       PUBLIC        TR1
   C:0120H         PUBLIC        testinter
-  C:01E7H         PUBLIC        init2
+  C:01EAH         PUBLIC        init2
   B:0090H.1       PUBLIC        A1
   B:0090H.0       PUBLIC        B1
   C:015AH         PUBLIC        display
-  -------         PROC          L?0035
-  -------         ENDPROC       L?0035
+  -------         PROC          L?0036
+  -------         ENDPROC       L?0036
   -------         PROC          _DELAY
   D:0006H         SYMBOL        ms
   -------         DO            
@@ -162,110 +165,126 @@ SYMBOL TABLE OF MODULE:  test (?C_STARTUP)
   D:0002H         SYMBOL        k
   -------         ENDDO         
   C:0199H         LINE#         11
-  C:0199H         LINE#         13
-  C:01A3H         LINE#         14
-  C:01B8H         LINE#         16
+  C:0199H         LINE#         12
+  C:0199H         LINE#         14
+  C:01A3H         LINE#         15
+  C:01B8H         LINE#         17
   -------         ENDPROC       _DELAY
+  -------         PROC          DELAY10US
+  -------         DO            
+  D:0007H         SYMBOL        i
+  -------         ENDDO         
+  C:0241H         LINE#         18
+  C:0241H         LINE#         19
+  C:0241H         LINE#         22
+  C:0243H         LINE#         23
+  C:0245H         LINE#         24
+BL51 BANKED LINKER/LOCATER V6.22                                                      03/20/2019  09:43:13  PAGE 4
+
+
+  -------         ENDPROC       DELAY10US
   -------         PROC          INIT
-  C:0210H         LINE#         19
-  C:0210H         LINE#         20
-  C:0212H         LINE#         21
-  C:0215H         LINE#         22
-  C:0217H         LINE#         23
-  C:021AH         LINE#         24
-  C:021DH         LINE#         25
-  C:021FH         LINE#         26
-  C:0221H         LINE#         27
+  C:0213H         LINE#         30
+  C:0213H         LINE#         31
+  C:0213H         LINE#         32
+  C:0215H         LINE#         33
+  C:0218H         LINE#         34
+  C:021AH         LINE#         35
+  C:021DH         LINE#         36
+  C:0220H         LINE#         37
+  C:0222H         LINE#         38
+  C:0224H         LINE#         39
   -------         ENDPROC       INIT
   -------         PROC          INIT2
-  C:01E7H         LINE#         28
-BL51 BANKED LINKER/LOCATER V6.22                                                      03/19/2019  23:14:11  PAGE 4
-
-
-  C:01E7H         LINE#         29
-  C:01EAH         LINE#         30
-  C:01EDH         LINE#         31
-  C:01F0H         LINE#         32
-  C:01F3H         LINE#         33
-  C:01F6H         LINE#         34
-  C:01F8H         LINE#         35
-  C:01FAH         LINE#         36
-  C:01FCH         LINE#         37
+  C:01EAH         LINE#         40
+  C:01EAH         LINE#         41
+  C:01EAH         LINE#         42
+  C:01EDH         LINE#         43
+  C:01F0H         LINE#         44
+  C:01F3H         LINE#         45
+  C:01F6H         LINE#         46
+  C:01F9H         LINE#         47
+  C:01FBH         LINE#         48
+  C:01FDH         LINE#         49
+  C:01FFH         LINE#         50
   -------         ENDPROC       INIT2
   -------         PROC          _SENDCHAR
   D:0007H         SYMBOL        Value
-  C:0222H         LINE#         39
-  C:0222H         LINE#         40
-  C:0222H         LINE#         41
-  C:0224H         LINE#         42
-  C:022AH         LINE#         43
-  C:0230H         LINE#         44
+  C:0225H         LINE#         52
+  C:0225H         LINE#         53
+  C:0225H         LINE#         54
+  C:0227H         LINE#         55
+  C:022DH         LINE#         56
+  C:0233H         LINE#         57
   -------         ENDPROC       _SENDCHAR
   -------         PROC          _SENDALL
   D:0001H         SYMBOL        pValue
-  C:01FDH         LINE#         46
-  C:01FDH         LINE#         47
-  C:01FDH         LINE#         48
-  C:0203H         LINE#         49
-  C:0203H         LINE#         50
-  C:0206H         LINE#         51
-  C:020DH         LINE#         52
-  C:020FH         LINE#         53
+  C:0200H         LINE#         59
+  C:0200H         LINE#         60
+  C:0200H         LINE#         61
+  C:0206H         LINE#         62
+  C:0209H         LINE#         63
+  C:0210H         LINE#         64
+  C:0212H         LINE#         65
   -------         ENDPROC       _SENDALL
   -------         PROC          MAIN
-  C:01B9H         LINE#         55
-  C:01B9H         LINE#         56
-  C:01BCH         LINE#         57
-  C:01BCH         LINE#         58
-  C:01BFH         LINE#         59
-  C:01C2H         LINE#         60
-  C:01C2H         LINE#         61
+  C:0003H         LINE#         67
+  C:0003H         LINE#         68
+  C:0003H         LINE#         69
+  C:0006H         LINE#         70
+  C:0006H         LINE#         71
+  C:0009H         LINE#         72
+  C:000CH         LINE#         73
+  C:000FH         LINE#         74
+  C:0018H         LINE#         75
+  C:001EH         LINE#         76
+  C:001EH         LINE#         77
+BL51 BANKED LINKER/LOCATER V6.22                                                      03/20/2019  09:43:13  PAGE 5
+
+
   -------         ENDPROC       MAIN
   -------         PROC          DISPLAY
-  C:015AH         LINE#         66
-  C:015AH         LINE#         67
-  C:015CH         LINE#         68
-  C:016FH         LINE#         69
-  C:0172H         LINE#         70
-  C:0174H         LINE#         71
-  C:0176H         LINE#         72
-  C:0189H         LINE#         73
-  C:018CH         LINE#         74
-  C:018EH         LINE#         75
+  C:015AH         LINE#         80
+  C:015AH         LINE#         81
+  C:015AH         LINE#         82
+  C:015CH         LINE#         83
+  C:016FH         LINE#         84
+  C:0172H         LINE#         85
+  C:0174H         LINE#         86
+  C:0176H         LINE#         87
+  C:0189H         LINE#         88
+  C:018CH         LINE#         89
+  C:018EH         LINE#         90
   -------         ENDPROC       DISPLAY
   -------         PROC          TESTINTER
-  C:0120H         LINE#         77
-  C:0120H         LINE#         79
-  C:0123H         LINE#         80
-  C:0126H         LINE#         81
-  C:0131H         LINE#         82
-BL51 BANKED LINKER/LOCATER V6.22                                                      03/19/2019  23:14:11  PAGE 5
-
-
-  C:0139H         LINE#         83
-  C:013AH         LINE#         84
-  C:013FH         LINE#         85
-  C:014AH         LINE#         86
-  C:0152H         LINE#         87
-  C:0153H         LINE#         88
-  C:0159H         LINE#         89
-  C:0159H         LINE#         90
-  C:0159H         LINE#         91
+  C:0120H         LINE#         92
+  C:0120H         LINE#         93
+  C:0120H         LINE#         95
+  C:0123H         LINE#         96
+  C:0126H         LINE#         97
+  C:0131H         LINE#         98
+  C:0139H         LINE#         99
+  C:013AH         LINE#         100
+  C:013FH         LINE#         101
+  C:014AH         LINE#         102
+  C:0152H         LINE#         103
+  C:0153H         LINE#         104
+  C:0159H         LINE#         105
+  C:0159H         LINE#         106
+  C:0159H         LINE#         107
   -------         ENDPROC       TESTINTER
   -------         PROC          SERIAL
-  C:0003H         LINE#         92
-  C:0003H         LINE#         93
-  C:0006H         LINE#         94
-  C:0006H         LINE#         95
-  C:0008H         LINE#         96
-  C:000BH         LINE#         97
-  C:0011H         LINE#         98
-  C:0011H         LINE#         100
-  C:0014H         LINE#         101
-  C:0014H         LINE#         102
-  C:0016H         LINE#         103
-  C:001CH         LINE#         104
-  C:001CH         LINE#         105
+  C:01B9H         LINE#         108
+  C:01B9H         LINE#         110
+  C:01BCH         LINE#         111
+  C:01BEH         LINE#         112
+  C:01C1H         LINE#         113
+  C:01C7H         LINE#         114
+  C:01C7H         LINE#         116
+  C:01CAH         LINE#         117
+  C:01CCH         LINE#         118
+  C:01D2H         LINE#         119
+  C:01D2H         LINE#         120
   -------         ENDPROC       SERIAL
   -------         ENDMOD        TEST
 
@@ -280,8 +299,11 @@ SYMBOL TABLE OF MODULE:  test (?C_STARTUP)
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?INIT?TEST
 
+BL51 BANKED LINKER/LOCATER V6.22                                                      03/20/2019  09:43:13  PAGE 6
+
+
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?TESTINTER?TEST
 
-Program Size: data=15.0 xdata=0 code=568
+Program Size: data=15.0 xdata=0 code=579
 LINK/LOCATE RUN COMPLETE.  2 WARNING(S),  0 ERROR(S)

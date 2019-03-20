@@ -1,0 +1,179 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        03/20/2019  16:19:28  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE STARTUP.obj, main.obj TO zm
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  STARTUP.obj (?C_STARTUP)
+  main.obj (MAIN)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_INIT)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?UIDIV)
+
+
+LINK MAP OF MODULE:  zm (?C_STARTUP)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     000CH     UNIT         ?DT?MAIN
+            IDATA   0014H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     008CH     UNIT         ?C_C51STARTUP
+            CODE    008FH     005EH     UNIT         ?PR?DISPLAY?MAIN
+            CODE    00EDH     0055H     UNIT         ?C?LIB_CODE
+            CODE    0142H     002AH     UNIT         ?PR?_DELAY?MAIN
+            CODE    016CH     0011H     UNIT         ?C_INITSEG
+            CODE    017DH     000AH     UNIT         ?CO?MAIN
+            CODE    0187H     0008H     UNIT         ?PR?MAIN?MAIN
+            CODE    018FH     0001H     UNIT         ?PR?INIT?MAIN
+
+
+
+OVERLAY MAP OF MODULE:   zm (?C_STARTUP)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?MAIN
+  +--> ?C_INITSEG
+
+?PR?MAIN?MAIN
+  +--> ?PR?INIT?MAIN
+  +--> ?PR?DISPLAY?MAIN
+
+?PR?DISPLAY?MAIN
+  +--> ?PR?_DELAY?MAIN
+  +--> ?CO?MAIN
+
+?PR?_DELAY?MAIN
+  +--> ?CO?MAIN
+BL51 BANKED LINKER/LOCATER V6.22                                                      03/20/2019  16:19:28  PAGE 2
+
+
+
+
+
+SYMBOL TABLE OF MODULE:  zm (?C_STARTUP)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ?C_STARTUP
+  C:0003H         SEGMENT       ?C_C51STARTUP
+  I:0014H         SEGMENT       ?STACK
+  C:0000H         PUBLIC        ?C_STARTUP
+  D:00E0H         SYMBOL        ACC
+  D:00F0H         SYMBOL        B
+  D:0083H         SYMBOL        DPH
+  D:0082H         SYMBOL        DPL
+  N:0000H         SYMBOL        IBPSTACK
+  N:0100H         SYMBOL        IBPSTACKTOP
+  N:0080H         SYMBOL        IDATALEN
+  C:0006H         SYMBOL        IDATALOOP
+  N:0000H         SYMBOL        PBPSTACK
+  N:0100H         SYMBOL        PBPSTACKTOP
+  N:0000H         SYMBOL        PDATALEN
+  N:0000H         SYMBOL        PDATASTART
+  N:0000H         SYMBOL        PPAGE
+  N:0000H         SYMBOL        PPAGEENABLE
+  D:00A0H         SYMBOL        PPAGE_SFR
+  D:0081H         SYMBOL        SP
+  C:0003H         SYMBOL        STARTUP1
+  N:0000H         SYMBOL        XBPSTACK
+  N:0000H         SYMBOL        XBPSTACKTOP
+  N:0000H         SYMBOL        XDATALEN
+  N:0000H         SYMBOL        XDATASTART
+  C:0000H         LINE#         126
+  C:0003H         LINE#         133
+  C:0005H         LINE#         134
+  C:0006H         LINE#         135
+  C:0007H         LINE#         136
+  C:0009H         LINE#         185
+  C:000CH         LINE#         196
+  -------         ENDMOD        ?C_STARTUP
+
+  -------         MODULE        MAIN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  C:014CH         PUBLIC        _delay
+  C:0187H         PUBLIC        main
+  C:018FH         PUBLIC        init
+  D:0008H         PUBLIC        buf
+  C:017DH         PUBLIC        LED
+  D:000CH         PUBLIC        EW_time_now
+  D:000EH         PUBLIC        SN_time_now
+  D:0010H         PUBLIC        EW_time_default
+  C:008FH         PUBLIC        display
+  D:0012H         PUBLIC        SN_time_default
+BL51 BANKED LINKER/LOCATER V6.22                                                      03/20/2019  16:19:28  PAGE 3
+
+
+  -------         PROC          MAIN
+  C:0187H         LINE#         28
+  C:0187H         LINE#         29
+  C:018AH         LINE#         30
+  C:018AH         LINE#         31
+  C:018DH         LINE#         32
+  -------         ENDPROC       MAIN
+  -------         PROC          INIT
+  C:018FH         LINE#         35
+  C:018FH         LINE#         38
+  -------         ENDPROC       INIT
+  -------         PROC          DISPLAY
+  C:008FH         LINE#         40
+  C:008FH         LINE#         41
+  C:008FH         LINE#         43
+  C:009CH         LINE#         44
+  C:00A9H         LINE#         46
+  C:00B6H         LINE#         47
+  C:00C3H         LINE#         50
+  C:00C6H         LINE#         51
+  C:00C8H         LINE#         52
+  C:00CBH         LINE#         54
+  C:00CEH         LINE#         55
+  C:00D0H         LINE#         56
+  C:00D3H         LINE#         58
+  C:00D6H         LINE#         59
+  C:00D8H         LINE#         60
+  C:00DBH         LINE#         62
+  C:00DEH         LINE#         63
+  C:00E6H         LINE#         64
+  -------         ENDPROC       DISPLAY
+  C:0142H         SYMBOL        L?0016
+  -------         PROC          L?0015
+  -------         ENDPROC       L?0015
+  C:0142H         SYMBOL        L?0016
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        ms
+  -------         DO            
+  D:0004H         SYMBOL        j
+  D:0002H         SYMBOL        k
+  -------         ENDDO         
+  C:014CH         LINE#         67
+  C:014CH         LINE#         68
+  C:014CH         LINE#         70
+  C:0156H         LINE#         71
+  C:016BH         LINE#         73
+  -------         ENDPROC       _DELAY
+  -------         ENDMOD        MAIN
+
+  -------         MODULE        ?C?UIDIV
+  C:00EDH         PUBLIC        ?C?UIDIV
+  -------         ENDMOD        ?C?UIDIV
+
+Program Size: data=21.0 xdata=0 code=400
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
