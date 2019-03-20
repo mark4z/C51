@@ -2,18 +2,14 @@
 
 
 //倒计时
-unsigned char buf[4];							//秒显示的变量
+unsigned char buf[4];				//秒显示的变量
 unsigned int EW_time_default = 25;  	  //东西默认值
 unsigned int SN_time_default = 30;			//南北默认值
-unsigned int EW_time_now = 20;		//东西方向当前数秒
+unsigned int EW_time_now = 25;		//东西方向当前数秒
 unsigned int SN_time_now = 30;		//南北方向当前数秒
 
 //字型码
-unsigned char code LED[] = {0xc0, 0xf9, 0xa4, 0xb0, 0x99, 0x92, 0x82, 0xf8, 0x80, 0x90};
-
-
-unsigned char code NUM[] = {0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f,0x40}; 
-
+char code LED[] = {0xc0, 0xf9, 0xa4, 0xb0, 0x99, 0x92, 0x82, 0xf8, 0x80, 0x90};
 
 //计数
 unsigned int time0_count;
@@ -43,34 +39,35 @@ void main()
 
 void init()
 {
-    //开总中断
-    EA = 1;
-	  ET0 = 1;      //开定时器0
+	  //开总中断
+	  EA = 1;
     //定时器0
     Timer0Init();
 
 }
 
-void time0() interrupt 1
-{
-    //重置定时器
-    TH0 = 0x4c;
+void time0() interrupt 0 {
+	  //重置定时器
+	  TH0 = 0x4c;
     TL0 = 0x00;
-	  time0_count++;
-    if(time0_count < 20) {}
-    else {
-        time0_count = 0;
-        if(EW_time_now > 0) {
-            EW_time_now--;
-        } else {
-            EW_time_now = EW_time_default;
-        }
-        if(EW_time_now > 0) {
-            EW_time_now--;
-        } else {
-            EW_time_now = EW_time_default;
-        }
+	  if(time0_count<20){}
+			else{
+				time0_count=0;
+	    if(EW_time_now>0)
+    {
+        EW_time_now--;
+    } else
+    {
+        EW_time_now = EW_time_default;
     }
+    if(EW_time_now>0)
+    {
+        EW_time_now--;
+    } else
+    {
+        EW_time_now = EW_time_default;
+    }
+}
 }
 
 void display() //显示子程序
@@ -110,6 +107,7 @@ void delay(int ms)			//延时子程序
 
 void Timer0Init()		//50毫秒@11.0592MHz
 {
+	  ET0=1;        //开定时器0
     TMOD = 0x01;	//设置定时器模式
     TL0 = 0x00;		//设置定时初值
     TH0 = 0x4C;		//设置定时初值
