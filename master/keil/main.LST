@@ -1,4 +1,4 @@
-C51 COMPILER V9.52.0.0   MAIN                                                              03/20/2019 19:40:22 PAGE 1   
+C51 COMPILER V9.52.0.0   MAIN                                                              03/20/2019 20:48:48 PAGE 1   
 
 
 C51 COMPILER V9.52.0.0, COMPILATION OF MODULE MAIN
@@ -11,39 +11,39 @@ line level    source
    2          
    3          
    4          //倒计时
-   5          unsigned char buf[4];             //秒显示的变量
-   6          unsigned int EW_time_default = 25;      //东西默认值
-   7          unsigned int SN_time_default = 30;      //南北默认值
-   8          unsigned int EW_time_now = 25;    //东西方向当前数秒
-   9          unsigned int SN_time_now = 30;    //南北方向当前数秒
+   5          unsigned char buf[4];             //片选数码管变量
+   6          unsigned int EW_time_default = 10;      //东西默认值
+   7          unsigned int SN_time_default = 10;      //南北默认值
+   8          unsigned int EW_time_now = 10;    //东西方向当前数秒
+   9          unsigned int SN_time_now = 10;    //南北方向当前数秒
   10          
   11          //通行
   12          unsigned int SN_or_EW=0; //0：南北通行 1：东西通行
-  13          
-  14          //字型码
-  15          unsigned char code LED[] = {0xc0, 0xf9, 0xa4, 0xb0, 0x99, 0x92, 0x82, 0xf8, 0x80, 0x90};
-  16          
+  13          unsigned int Open=1;
+  14          
+  15          //字型码
+  16          unsigned char code LED[] = {0xc0, 0xf9, 0xa4, 0xb0, 0x99, 0x92, 0x82, 0xf8, 0x80, 0x90};
   17          
-  18          unsigned char code NUM[] = {0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f,0x40}; 
-  19          
-  20          
-  21          //计数
-  22          unsigned int time0_count;
-  23          
-  24          //红绿灯
-  25          sbit Green_EW = P2 ^ 1;   //东西
-  26          sbit Yellow_EW = P2 ^ 2;
-  27          sbit Red_EW = P2 ^ 3;
-  28          
-  29          sbit Red_SN = P2 ^ 6;   //南北
-  30          sbit Yellow_SN = P2 ^ 5;
-  31          sbit Green_SN = P2 ^ 4;
-  32          
-  33          //函数声明
-  34          void delay(int ms);     //延时
-  35          void display();       //显示倒计时
-  36          void init();          //开机初始化
-  37          void Timer0Init();       //定时器0
+  18          
+  19          //计数
+  20          unsigned int time0_count;
+  21          
+  22          //红绿灯
+  23          sbit Green_EW = P2 ^ 1;   //东西
+  24          sbit Yellow_EW = P2 ^ 2;
+  25          sbit Red_EW = P2 ^ 3;
+  26          
+  27          sbit Red_SN = P2 ^ 6;   //南北
+  28          sbit Yellow_SN = P2 ^ 5;
+  29          sbit Green_SN = P2 ^ 4;
+  30          
+  31          //函数声明
+  32          void delay(int ms);     //延时
+  33          void display();       //显示倒计时
+  34          void init();          //开机初始化
+  35          void Timer0Init();       //定时器0
+  36          void traffic_light(); //控制信号灯
+  37          void LED_light();      //控制倒计时
   38          
   39          void main()
   40          {
@@ -62,7 +62,7 @@ line level    source
   53   1          Timer0Init();
   54   1      
   55   1      }
-C51 COMPILER V9.52.0.0   MAIN                                                              03/20/2019 19:40:22 PAGE 2   
+C51 COMPILER V9.52.0.0   MAIN                                                              03/20/2019 20:48:48 PAGE 2   
 
   56          
   57          void time0() interrupt 1
@@ -70,79 +70,112 @@ line level    source
   59   1          //重置定时器
   60   1          TH0 = 0x4c;
   61   1          TL0 = 0x00;
-  62   1          time0_count++;
-  63   1          if(time0_count < 20) {}
-  64   1          else {
-  65   2              time0_count = 0;
-  66   2              if(SN_time_now > 0) {
-  67   3                  SN_time_now--;
-  68   3              } else {
-  69   3                  SN_time_now = EW_time_default;
-  70   3              }
-  71   2              if(EW_time_now > 0) {
-  72   3                  EW_time_now--;
-  73   3              } else {
-  74   3                  EW_time_now = EW_time_default;
-  75   3              }
-  76   2          }
-  77   1      }
-  78          
-  79          void display() //显示子程序
-  80          {
-  81   1            
-  82   1        
-  83   1          //南北方向个位十位
-  84   1          buf[0] = SN_time_now / 10;
-  85   1          buf[1] = SN_time_now % 10;
-  86   1          //东西方向个位十位
-  87   1          buf[2] = EW_time_now / 10;
-  88   1          buf[3] = EW_time_now % 10;
-  89   1      
-  90   1          //点亮南北方向倒计时
-  91   1          P1 = 0x01;              //片选LED1
-  92   1          P0 = LED[buf[0]];     //送南北时间十位的数码管编码
-  93   1          delay(1);       //延时      
-  94   1        
-  95   1          P1 = 0x02;              //片选LED2
-  96   1          P0 = LED[buf[1]];
-  97   1          delay(1);
-  98   1          
-  99   1          P1 = 0X04;          //片选LED3
- 100   1          P0 = LED[buf[2]];       //送东西时间十位的数码管编码
- 101   1          delay(1);       //延时
- 102   1          
- 103   1          P1 = 0X08;        //片选LED4
- 104   1          P0 = LED[buf[3]];
- 105   1          delay(1); 
- 106   1      }
- 107          
- 108          void delay(int ms)      //延时子程序
- 109          {
- 110   1          unsigned int j, k;
- 111   1          for (j = 0; j < ms; j++)
- 112   1              for (k = 0; k < 124; k++)
- 113   1                  ;
- 114   1      }
- 115          
- 116          void Timer0Init()   //50毫秒@11.0592MHz
- 117          {
-C51 COMPILER V9.52.0.0   MAIN                                                              03/20/2019 19:40:22 PAGE 3   
+  62   1          //调整信号灯
+  63   1          traffic_light();
+  64   1          //调整倒计时
+  65   1          LED_light();
+  66   1      }
+  67          
+  68          void display() //显示子程序
+  69          {
+  70   1      
+  71   1            
+  72   1        
+  73   1          //南北方向个位十位
+  74   1          buf[0] = SN_time_now / 10;
+  75   1          buf[1] = SN_time_now % 10;
+  76   1          //东西方向个位十位
+  77   1          buf[2] = EW_time_now / 10;
+  78   1          buf[3] = EW_time_now % 10;
+  79   1      
+  80   1          //点亮南北方向倒计时
+  81   1          P1 = 0x01;              //片选LED1
+  82   1          P0 = LED[buf[0]];     //送南北时间十位的数码管编码
+  83   1          delay(1);       //延时      
+  84   1        
+  85   1          P1 = 0x02;              //片选LED2
+  86   1          P0 = LED[buf[1]];
+  87   1          delay(1);
+  88   1          
+  89   1          P1 = 0X04;          //片选LED3
+  90   1          P0 = LED[buf[2]];       //送东西时间十位的数码管编码
+  91   1          delay(1);       //延时
+  92   1          
+  93   1          P1 = 0X08;        //片选LED4
+  94   1          P0 = LED[buf[3]];
+  95   1          delay(1); 
+  96   1      }
+  97          
+  98          void traffic_light() //信号灯
+  99          {
+ 100   1        P2=0x00;           //
+ 101   1        if((SN_or_EW))
+ 102   1        {
+ 103   2          //东西方向通行  绿灯亮
+ 104   2          Green_EW=Open;
+ 105   2          Red_EW=!Open;
+ 106   2          Yellow_EW=!Open;
+ 107   2          //南北方向进禁行 红灯亮
+ 108   2          Green_SN=!Open;
+ 109   2          Red_SN=Open;
+ 110   2          Yellow_SN=!Open;
+ 111   2        }else{
+ 112   2          //
+ 113   2          //东西方向禁行  红灯亮
+ 114   2          Green_EW=!Open;
+ 115   2          Red_EW=Open;
+ 116   2          Yellow_EW=!Open;
+ 117   2          //南北方向通行绿灯亮
+C51 COMPILER V9.52.0.0   MAIN                                                              03/20/2019 20:48:48 PAGE 3   
 
- 118   1          TMOD = 0x01;  //设置定时器模式
- 119   1          TL0 = 0x00;   //设置定时初值
- 120   1          TH0 = 0x4C;   //设置定时初值
- 121   1          TF0 = 0;      //清除TF0标志
- 122   1          TR0 = 1;      //定时器0开始计时
- 123   1      }
- 124          
+ 118   2          Green_SN=Open;
+ 119   2          Red_SN=!Open;
+ 120   2          Yellow_SN=!Open;
+ 121   2      }
+ 122   1      }
+ 123          
+ 124          void LED_light() //倒计时
+ 125          {
+ 126   1          time0_count++;
+ 127   1          if(time0_count < 20) {}    //每秒检测一次，归零后重置，并切换通信方向
+ 128   1          else {
+ 129   2              time0_count = 0;
+ 130   2              if(SN_time_now > 0) {
+ 131   3                  SN_time_now--;
+ 132   3                  EW_time_now--;
+ 133   3              } else {
+ 134   3                  SN_time_now = SN_time_default;
+ 135   3                  EW_time_now = EW_time_default;
+ 136   3                  SN_or_EW=!SN_or_EW;
+ 137   3              }
+ 138   2          }
+ 139   1      }
+ 140          
+ 141          void delay(int ms)      //延时子程序
+ 142          {
+ 143   1          unsigned int j, k;
+ 144   1          for (j = 0; j < ms; j++)
+ 145   1              for (k = 0; k < 124; k++)
+ 146   1                  ;
+ 147   1      }
+ 148          
+ 149          void Timer0Init()   //50毫秒@11.0592MHz
+ 150          {
+ 151   1          TMOD = 0x01;  //设置定时器模式
+ 152   1          TL0 = 0x00;   //设置定时初值
+ 153   1          TH0 = 0x4C;   //设置定时初值
+ 154   1          TF0 = 0;      //清除TF0标志
+ 155   1          TR0 = 1;      //定时器0开始计时
+ 156   1      }
+ 157          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    257    ----
-   CONSTANT SIZE    =     21    ----
+   CODE SIZE        =    383    ----
+   CONSTANT SIZE    =     10    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =     16    ----
+   DATA SIZE        =     18    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
