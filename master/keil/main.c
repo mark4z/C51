@@ -137,11 +137,9 @@ void flash()
 				flash_signl=0; //闪烁信号清零
 			
 			//黄灯闪烁
-			if(SN_flash)
-			{Yellow_SN=flash_signl%2;}
+			if(SN_flash) {Yellow_SN=flash_signl%2;}
 			else {Yellow_SN=!Open;}
-			if(EW_flash)
-			{Yellow_EW=flash_signl%2;}
+			if(EW_flash) {Yellow_EW=flash_signl%2;}
 			else {Yellow_EW=!Open;}
 		}
 }
@@ -151,7 +149,7 @@ void LED_light() //倒计时
 		time0_count++;
     if(time0_count >= 20) 
 		{
-			//每秒检测一次，归零后重置，并切换通信方向
+			//每秒检测一次，归零后重置，并切换通行方向
         time0_count = 0;
         if(EW_time_now > 0) {
             SN_time_now--;

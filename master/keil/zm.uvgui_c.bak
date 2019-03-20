@@ -1375,10 +1375,10 @@
       <Doc>
         <Name>.\main.c</Name>
         <ColumnNumber>29</ColumnNumber>
-        <TopLine>82</TopLine>
-        <CurrentLine>143</CurrentLine>
+        <TopLine>1</TopLine>
+        <CurrentLine>9</CurrentLine>
         <Folding>1</Folding>
-        <ContractedFolders>52,61,74,147,169,177</ContractedFolders>
+        <ContractedFolders>52,61,74,104,129,171,179</ContractedFolders>
         <PaneID>0</PaneID>
       </Doc>
     </MDIGroup>
