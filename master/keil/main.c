@@ -5,8 +5,11 @@
 unsigned char buf[4];							//秒显示的变量
 unsigned int EW_time_default = 25;  	  //东西默认值
 unsigned int SN_time_default = 30;			//南北默认值
-unsigned int EW_time_now = 20;		//东西方向当前数秒
+unsigned int EW_time_now = 25;		//东西方向当前数秒
 unsigned int SN_time_now = 30;		//南北方向当前数秒
+
+//通行
+unsigned int SN_or_EW=0; //0：南北通行 1：东西通行
 
 //字型码
 unsigned char code LED[] = {0xc0, 0xf9, 0xa4, 0xb0, 0x99, 0x92, 0x82, 0xf8, 0x80, 0x90};
@@ -60,10 +63,10 @@ void time0() interrupt 1
     if(time0_count < 20) {}
     else {
         time0_count = 0;
-        if(EW_time_now > 0) {
-            EW_time_now--;
+        if(SN_time_now > 0) {
+            SN_time_now--;
         } else {
-            EW_time_now = EW_time_default;
+            SN_time_now = EW_time_default;
         }
         if(EW_time_now > 0) {
             EW_time_now--;
@@ -75,29 +78,31 @@ void time0() interrupt 1
 
 void display() //显示子程序
 {
+	    
+	
     //南北方向个位十位
-    buf[1] = SN_time_now / 10;
-    buf[2] = SN_time_now % 10;
+    buf[0] = SN_time_now / 10;
+    buf[1] = SN_time_now % 10;
     //东西方向个位十位
-    buf[3] = EW_time_now / 10;
-    buf[4] = EW_time_now % 10;
+    buf[2] = EW_time_now / 10;
+    buf[3] = EW_time_now % 10;
 
     //点亮南北方向倒计时
     P1 = 0x01;           		//片选LED1
-    P0 = LED[buf[1]];			//送南北时间十位的数码管编码
-    delay(1);				//延时
-
+    P0 = LED[buf[0]];			//送南北时间十位的数码管编码
+    delay(1);				//延时			
+	
     P1 = 0x02;             	//片选LED2
-    P0 = LED[buf[2]];
+    P0 = LED[buf[1]];
     delay(1);
-
+		
     P1 = 0X04;		  		//片选LED3
-    P0 = LED[buf[3]];		    //送东西时间十位的数码管编码
+    P0 = LED[buf[2]];		    //送东西时间十位的数码管编码
     delay(1);				//延时
-
+		
     P1 = 0X08;				//片选LED4
-    P0 = LED[buf[4]];
-    delay(1);
+    P0 = LED[buf[3]];
+    delay(1);	
 }
 
 void delay(int ms)			//延时子程序
