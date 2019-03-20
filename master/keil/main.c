@@ -9,7 +9,7 @@ unsigned int EW_time_now = 15;		//¶«Î÷·½Ïòµ±Ç°ÊýÃë
 unsigned int SN_time_now = 10;		//ÄÏ±±·½Ïòµ±Ç°ÊýÃë
 
 //Í¨ÐÐ
-unsigned int SN_or_EW=0; //0£ºÄÏ±±Í¨ÐÐ 1£º¶«Î÷Í¨ÐÐ
+unsigned int SN_or_EW=1; //0£ºÄÏ±±Í¨ÐÐ 1£º¶«Î÷Í¨ÐÐ
 unsigned int Open=1;
 unsigned int SN_flash=0; //ÄÏ±±»ÆµÆÉÁË¸±êÖ¾
 unsigned int EW_flash=0; //¶«Î÷»ÆµÆÉÁË¸±êÖ¾
@@ -151,18 +151,26 @@ void LED_light() //µ¹¼ÆÊ±
 		{
 			//Ã¿Ãë¼ì²âÒ»´Î£¬¹éÁãºóÖØÖÃ£¬²¢ÇÐ»»Í¨ÐÐ·½Ïò
         time0_count = 0;
-			//¶«Î÷Í¨ÐÐÊ
-        if(EW_time_now > 0) {
+			//¶«Î÷Í¨ÐÐ
+        //if((SN_or_EW?EW_time_now:SN_time_now) > 0) {
+			if((SN_or_EW?EW_time_now:SN_time_now) > 0) {
             SN_time_now--;
 					  EW_time_now--;
-					 if(SN_time_now<=0)
+						if(((!SN_or_EW)?EW_time_now:SN_time_now)<=0)
 						 {
-							 if(SN_or_EW){
-									SN_time_now=EW_time_now;}
-						   }else{EW_time_now=SN_time_now;}
+							 if(SN_time_now>EW_time_now)
+									EW_time_now=5;
+							if(EW_time_now>SN_time_now)
+									SN_time_now=5;}
         } else {
+						if(!SN_or_EW){
             SN_time_now = SN_time_default;
 					  EW_time_now = EW_time_default;
+						}
+						else{
+            SN_time_now = SN_time_default;
+					  EW_time_now = SN_time_default;
+						}
 						SN_or_EW=!SN_or_EW;
         }
 			}
