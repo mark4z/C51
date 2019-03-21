@@ -1,4 +1,4 @@
-C51 COMPILER V9.52.0.0   MAIN                                                              03/21/2019 13:56:27 PAGE 1   
+C51 COMPILER V9.52.0.0   MAIN                                                              03/21/2019 23:03:24 PAGE 1   
 
 
 C51 COMPILER V9.52.0.0, COMPILATION OF MODULE MAIN
@@ -9,254 +9,355 @@ line level    source
 
    1          #include <reg51.h>      //头文件
    2          
-   3          
-   4          //倒计时
-   5          unsigned char buf[4];             //片选数码管变量
-   6          unsigned int EW_time_default = 15;      //东西默认值
-   7          unsigned int SN_time_default = 15;      //南北默认值
-   8          unsigned int EW_time_now = 15;    //东西方向当前数秒
-   9          unsigned int SN_time_now = 15;    //南北方向当前数秒
-  10          
-  11          //通行
-  12          unsigned int SN_or_EW = 1; //0：南北通行 1：东西通行
-  13          unsigned int Open = 1;
-  14          unsigned int SN_flash = 0; //南北黄灯闪烁标志
-  15          unsigned int EW_flash = 0; //东西黄灯闪烁标志
-  16          
-  17          //字型码
-  18          unsigned char code LED[] = {0xc0, 0xf9, 0xa4, 0xb0, 0x99, 0x92, 0x82, 0xf8, 0x80, 0x90};
-  19          
+   3          //倒计时
+   4          unsigned char buf[4];             //片选数码管变量
+   5          unsigned int EW_time_default = 15;      //东西默认值
+   6          unsigned int SN_time_default = 15;      //南北默认值
+   7          unsigned int EW_time_now = 7;   //东西方向当前数秒
+   8          unsigned int SN_time_now = 10;    //南北方向当前数秒
+   9          unsigned int SN_Yellow_time_default = 3;    //南北方向黄灯
+  10          unsigned int EW_Yellow_time_default = 3;    //东西方向黄灯
+  11          unsigned int SN_Yellow_time_now = 3;    //南北方向黄灯
+  12          unsigned int EW_Yellow_time_now = 3;    //东西方向黄灯
+  13          
+  14          //通行
+  15          unsigned int traffic_light_signal = 0; //交通灯信号标志位
+  16          unsigned int SN_or_EW = 1; //0：南北通行 1：东西通行
+  17          unsigned int Open = 1;
+  18          unsigned int SN_flash = 0; //南北黄灯闪烁标志
+  19          unsigned int EW_flash = 0; //东西黄灯闪烁标志
   20          
-  21          //计数
-  22          unsigned int time0_count; //1s定时
-  23          unsigned int flash_count; //0.5s定时
-  24          unsigned int flash_signl; //闪烁计数信号
-  25          
-  26          //红绿灯
-  27          sbit Green_EW = P2 ^ 1;   //东西
-  28          sbit Yellow_EW = P2 ^ 2;
-  29          sbit Red_EW = P2 ^ 3;
-  30          
-  31          sbit Red_SN = P2 ^ 6;   //南北
-  32          sbit Yellow_SN = P2 ^ 5;
-  33          sbit Green_SN = P2 ^ 4;
-  34          
-  35          //函数声明
-  36          void delay(int ms);     //延时
-  37          void display();       //显示倒计时
-  38          void init();          //开机初始化
-  39          void Timer0Init();       //定时器0
-  40          void traffic_light(); //控制信号灯
-  41          void LED_light();      //控制倒计时
-  42          void flash();         //黄灯闪烁
-  43          
-  44          void main()
-  45          {
-  46   1          init();
-  47   1          while (1) {
-  48   2              display();
-  49   2          }
-  50   1      }
-  51          
-  52          void init()
-  53          {
-  54   1          //开总中断
-  55   1          EA = 1;
-C51 COMPILER V9.52.0.0   MAIN                                                              03/21/2019 13:56:27 PAGE 2   
+  21          //智能延时
+  22          unsigned int sensor1_num = 0;
+  23          unsigned int sensor2_num = 0;
+  24          
+  25          //字型码
+  26          unsigned char code LED[] = {0xc0, 0xf9, 0xa4, 0xb0, 0x99, 0x92, 0x82, 0xf8, 0x80, 0x90};
+  27          
+  28          //计数
+  29          unsigned int time0_count; //1s定时
+  30          unsigned int flash_count; //0.5s定时
+  31          unsigned int flash_signl; //闪烁计数信号
+  32          
+  33          //后台通信
+  34          unsigned int flag = 0;
+  35          
+  36          //红绿灯
+  37          sbit Green_EW = P2 ^ 1;   //东西
+  38          sbit Yellow_EW = P2 ^ 2;
+  39          sbit Red_EW = P2 ^ 3;
+  40          
+  41          sbit Red_SN = P2 ^ 6;   //南北
+  42          sbit Yellow_SN = P2 ^ 5;
+  43          sbit Green_SN = P2 ^ 4;
+  44          
+  45          //函数声明
+  46          void delay(int ms);     //延时
+  47          void display();       //显示倒计时
+  48          void init();          //开机初始化
+  49          void Timer0Init();       //定时器0
+  50          void traffic_light(); //控制信号灯
+  51          void LED_light();      //控制倒计时
+  52          void flash();     //黄灯闪烁
+  53          void Yellow_adjustment();     //根据行人数量调整时间
+  54          void sendChar(unsigned int Value);      //发送消息
+  55          
+C51 COMPILER V9.52.0.0   MAIN                                                              03/21/2019 23:03:24 PAGE 2   
 
-  56   1          //外部中断
-  57   1          IT0=1; //跳变沿
-  58   1          EX0=1;//中断允许
-  59   1          IT1=1; //跳变沿
-  60   1          EX1=1;//中断允许
-  61   1        
-  62   1          ET0 = 1;      //开定时器0
-  63   1          //定时器0初始化
-  64   1          Timer0Init();
-  65   1      }
-  66          
-  67          void time0() interrupt 1
-  68          {
-  69   1          //重置定时器
-  70   1          TH0 = 0x4c;
-  71   1          TL0 = 0x00;
-  72   1          //调整信号灯
-  73   1          traffic_light();
-  74   1          //调整倒计时
-  75   1          LED_light();
-  76   1          //调整黄灯
-  77   1          flash();
-  78   1      }
-  79          
-  80          void display() //显示子程序
+  56          void main() {
+  57   1        init();
+  58   1        while (1) {
+  59   2          display();
+  60   2          //调整信号灯
+  61   2          traffic_light();
+  62   2        }
+  63   1      }
+  64          
+  65          void init() {
+  66   1        //开总中断
+  67   1        EA = 1;
+  68   1        //外部中断
+  69   1        IT0 = 1; //跳变沿
+  70   1        EX0 = 1; //中断允许
+  71   1        IT1 = 1; //跳变沿
+  72   1        EX1 = 1; //中断允许
+  73   1      
+  74   1        ET0 = 1; //开定时器0
+  75   1        //定时器0初始化
+  76   1        Timer0Init();
+  77   1      }
+  78          
+  79          void time0()
+  80          interrupt 1
   81          {
-  82   1      
-  83   1      
-  84   1      
-  85   1          //南北方向个位十位
-  86   1          buf[0] = SN_time_now / 10;
-  87   1          buf[1] = SN_time_now % 10;
-  88   1          //东西方向个位十位
-  89   1          buf[2] = EW_time_now / 10;
-  90   1          buf[3] = EW_time_now % 10;
-  91   1      
-  92   1          //点亮南北方向倒计时
-  93   1          P1 = 0x01;              //片选LED1
-  94   1          P0 = LED[buf[0]];     //送南北时间十位的数码管编码
-  95   1          delay(1);       //延时
-  96   1      
-  97   1          P1 = 0x02;              //片选LED2
-  98   1          P0 = LED[buf[1]];
-  99   1          delay(1);
+  82   1        //重置定时器
+  83   1        TH0 = 0x4c;
+  84   1        TL0 = 0x00;
+  85   1        //调整倒计时
+  86   1        LED_light();
+  87   1        //调整黄灯
+  88   1        flash();
+  89   1      }
+  90          
+  91          void display() //显示子程序
+  92          {
+  93   1      
+  94   1        //南北方向个位十位
+  95   1        buf[0] = SN_time_now / 10;
+  96   1        buf[1] = SN_time_now % 10;
+  97   1        //东西方向个位十位
+  98   1        buf[2] = EW_time_now / 10;
+  99   1        buf[3] = EW_time_now % 10;
  100   1      
- 101   1          P1 = 0X04;          //片选LED3
- 102   1          P0 = LED[buf[2]];       //送东西时间十位的数码管编码
- 103   1          delay(1);       //延时
- 104   1      
- 105   1          P1 = 0X08;        //片选LED4
- 106   1          P0 = LED[buf[3]];
- 107   1          delay(1);
- 108   1      }
- 109          
- 110          void traffic_light() //信号灯
- 111          {
- 112   1          //
- 113   1          if((SN_or_EW)) {
- 114   2              //东西方向通行  绿灯亮
- 115   2              if(EW_time_now > 5) {
- 116   3                  Green_EW = Open;    //小于5s时，黄灯闪烁
- 117   3                  EW_flash = !Open;
-C51 COMPILER V9.52.0.0   MAIN                                                              03/21/2019 13:56:27 PAGE 3   
+ 101   1        //点亮南北方向倒计时
+ 102   1        P1 = 0x01;              //片选LED1
+ 103   1        P0 = LED[buf[0]];     //送南北时间十位的数码管编码
+ 104   1        delay(1);       //延时
+ 105   1      
+ 106   1        P1 = 0x02;              //片选LED2
+ 107   1        P0 = LED[buf[1]];
+ 108   1        delay(1);
+ 109   1      
+ 110   1        P1 = 0X04;          //片选LED3
+ 111   1        P0 = LED[buf[2]];       //送东西时间十位的数码管编码
+ 112   1        delay(1);       //延时
+ 113   1      
+ 114   1        P1 = 0X08;        //片选LED4
+ 115   1        P0 = LED[buf[3]];
+ 116   1        delay(1);
+ 117   1      }
+C51 COMPILER V9.52.0.0   MAIN                                                              03/21/2019 23:03:24 PAGE 3   
 
- 118   3              } else {
- 119   3                  Green_EW = !Open;
- 120   3                  EW_flash = Open;
- 121   3              }
- 122   2              Red_EW = !Open;
- 123   2              //南北方向进禁行 红灯亮
- 124   2              SN_flash = !Open; //关闭黄灯
- 125   2              Green_SN = !Open;
- 126   2              Red_SN = Open;
- 127   2          } else {
- 128   2              //东西方向禁行  红灯亮
- 129   2              EW_flash = !Open; //关闭黄灯
- 130   2              Green_EW = !Open;
- 131   2              Red_EW = Open;
- 132   2              //南北方向通行绿灯亮
- 133   2              if(SN_time_now > 5) {
- 134   3                  Green_SN = Open;    //小于5s时，黄灯闪烁
- 135   3                  SN_flash = !Open;
- 136   3              } else {
- 137   3                  Green_SN = !Open;
- 138   3                  SN_flash = Open;
- 139   3              }
- 140   2              Red_SN = !Open;
- 141   2          }
- 142   1      }
- 143          
- 144          void flash()
- 145          {
- 146   1          flash_count++;
- 147   1          if(flash_count >= 10) { //0.5s闪烁一次
- 148   2              flash_count = 0;
- 149   2              flash_signl++;
- 150   2              if(flash_signl > 10)
- 151   2                  flash_signl = 0; //闪烁信号清零
- 152   2      
- 153   2              //黄灯闪烁
- 154   2              if(SN_flash) {
- 155   3                  Yellow_SN = flash_signl % 2;
- 156   3              } else {
- 157   3                  Yellow_SN = !Open;
- 158   3              }
- 159   2              if(EW_flash) {
- 160   3                  Yellow_EW = flash_signl % 2;
- 161   3              } else {
- 162   3                  Yellow_EW = !Open;
- 163   3              }
- 164   2          }
- 165   1      }
- 166          
- 167          void LED_light() //倒计时
- 168          {
- 169   1          time0_count++;
- 170   1          if(time0_count >= 20) {
- 171   2              //每秒检测一次，归零后重置，并切换通行方向
- 172   2              time0_count = 0;
- 173   2              //东西通行
- 174   2              if(SN_or_EW) {
- 175   3                  if(EW_time_now > 0) {
- 176   4                      EW_time_now--;
- 177   4                      if(SN_time_now > 0) {
- 178   5                          SN_time_now--;
- 179   5                      } else {
-C51 COMPILER V9.52.0.0   MAIN                                                              03/21/2019 13:56:27 PAGE 4   
+ 118          
+ 119          void traffic_light() //信号灯
+ 120          {
+ 121   1        switch (traffic_light_signal) {
+ 122   2        case 0: //东西方向通行  绿灯亮
+ 123   2          Green_EW = Open;
+ 124   2          Red_EW = !Open;
+ 125   2          EW_flash = !Open;
+ 126   2      
+ 127   2          Green_SN = !Open;
+ 128   2          Red_SN = Open;
+ 129   2          SN_flash = !Open;
+ 130   2      
+ 131   2          break;
+ 132   2        case 1: //东西方向通行  黄灯闪
+ 133   2          Green_EW = !Open;
+ 134   2          Red_EW = !Open;
+ 135   2          EW_flash = Open;
+ 136   2      
+ 137   2          Green_SN = !Open;
+ 138   2          Yellow_SN = !Open;
+ 139   2          Red_SN = Open;
+ 140   2          SN_flash = !Open;
+ 141   2      
+ 142   2          break;
+ 143   2        case 2: //南北方向通行  绿灯亮
+ 144   2          Green_EW = !Open;
+ 145   2          Red_EW = Open;
+ 146   2          EW_flash = !Open;
+ 147   2      
+ 148   2          Green_SN = Open;
+ 149   2          Red_SN = !Open;
+ 150   2          SN_flash = !Open;
+ 151   2      
+ 152   2          break;
+ 153   2        case 3: //南北方向通行  黄灯闪
+ 154   2          Green_EW = !Open;
+ 155   2          Red_EW = Open;
+ 156   2          EW_flash = !Open;
+ 157   2      
+ 158   2          Green_SN = !Open;
+ 159   2          Red_SN = !Open;
+ 160   2          SN_flash = Open;
+ 161   2      
+ 162   2          break;
+ 163   2        }
+ 164   1      }
+ 165          
+ 166          void flash() {
+ 167   1        flash_count++;
+ 168   1        if (flash_count >= 10) { //0.5s闪烁一次
+ 169   2          flash_count = 0;
+ 170   2          flash_signl++;
+ 171   2          if (flash_signl > 10)
+ 172   2            flash_signl = 0; //闪烁信号清零
+ 173   2      
+ 174   2          //黄灯闪烁
+ 175   2          if (SN_flash) {
+ 176   3            Yellow_SN = flash_signl % 2;
+ 177   3          } else {
+ 178   3            Yellow_SN = !Open;
+ 179   3          }
+C51 COMPILER V9.52.0.0   MAIN                                                              03/21/2019 23:03:24 PAGE 4   
 
- 180   5                          SN_time_now = EW_time_now;
- 181   5                      }
- 182   4                  } else {
- 183   4                      EW_time_now=EW_time_default;
- 184   4                      SN_time_now=SN_time_default;
- 185   4                      SN_or_EW = !SN_or_EW;
- 186   4                  }
- 187   3              }
- 188   2              //南北通行
- 189   2              else {
- 190   3                  if(SN_time_now > 0) {
- 191   4                      SN_time_now--;
- 192   4                      if(EW_time_now > 0) {
- 193   5                          EW_time_now--;
- 194   5                      } else {
- 195   5                          EW_time_now = SN_time_now;
- 196   5                      }
- 197   4                  } else {
- 198   4                      EW_time_now=EW_time_default;
- 199   4                      SN_time_now=SN_time_default;
- 200   4                      SN_or_EW = !SN_or_EW;
- 201   4                  }
- 202   3              }
- 203   2          }
- 204   1      }
- 205          
- 206          void delay(int ms)      //延时子程序
- 207          {
- 208   1          unsigned int j, k;
- 209   1          for (j = 0; j < ms; j++)
- 210   1              for (k = 0; k < 124; k++)
- 211   1                  ;
- 212   1      }
- 213          
- 214          void Timer0Init()   //50毫秒@11.0592MHz
- 215          {
- 216   1          TMOD = 0x01;  //设置定时器模式
- 217   1          TL0 = 0x00;   //设置定时初值
- 218   1          TH0 = 0x4C;   //设置定时初值
- 219   1          TF0 = 0;      //清除TF0标志
- 220   1          TR0 = 1;      //定时器0开始计时
- 221   1      }
- 222          
- 223          void sensor1() interrupt 0
- 224          {
- 225   1        delay(100);//延时消抖
- 226   1        SN_time_now+=5;
- 227   1      }
- 228          
- 229          void sensor2() interrupt 2
- 230          {
- 231   1        delay(100);//延时消抖
- 232   1        EW_time_now+=5;
- 233   1      }
- 234          
+ 180   2          if (EW_flash) {
+ 181   3            Yellow_EW = flash_signl % 2;
+ 182   3          } else {
+ 183   3            Yellow_EW = !Open;
+ 184   3          }
+ 185   2        }
+ 186   1      }
+ 187          
+ 188          void LED_light() //倒计时
+ 189          {
+ 190   1        time0_count++;
+ 191   1        if (time0_count >= 19) {
+ 192   2          //每秒检测一次，归零后重置，并切换通行方向
+ 193   2          time0_count = 0;
+ 194   2          //东西通行
+ 195   2          if (SN_or_EW) {
+ 196   3            if (EW_time_now > 0 && EW_flash == 0) //正常绿灯
+ 197   3                {
+ 198   4              traffic_light_signal = 0;
+ 199   4              EW_flash = 0;
+ 200   4            }
+ 201   3            if (EW_time_now <= 0 && EW_flash == 0) //绿灯倒计时结束，切换黄灯
+ 202   3                {
+ 203   4              Yellow_adjustment();
+ 204   4              EW_time_now = EW_Yellow_time_now;
+ 205   4              EW_flash = 1;
+ 206   4              traffic_light_signal = 1;
+ 207   4            }
+ 208   3            if (EW_time_now <= 0 && EW_flash == 1) //黄灯倒计时结束，切换通行方向
+ 209   3                {
+ 210   4              EW_time_now = EW_time_default;
+ 211   4              SN_time_now = SN_time_default;
+ 212   4              //重置可调节黄灯时间
+ 213   4              EW_Yellow_time_now = EW_Yellow_time_default;
+ 214   4              SN_Yellow_time_now = SN_Yellow_time_default;
+ 215   4      
+ 216   4              EW_flash = 0;
+ 217   4              SN_or_EW = !SN_or_EW;
+ 218   4            }
+ 219   3            if (SN_time_now <= 0)   //东西方向额外等待时间
+ 220   3                {
+ 221   4              SN_time_now = EW_time_now;
+ 222   4            }
+ 223   3          }
+ 224   2          //南北通行
+ 225   2          else {
+ 226   3            if (SN_time_now > 0 && SN_flash == 0)   //正常绿灯
+ 227   3                {
+ 228   4              traffic_light_signal = 2;
+ 229   4              SN_flash = 0;
+ 230   4            }
+ 231   3            if (SN_time_now <= 0 && SN_flash == 0)   //绿灯倒计时结束，切换黄灯
+ 232   3                {
+ 233   4              Yellow_adjustment();
+ 234   4              SN_time_now = SN_Yellow_time_now;
+ 235   4              SN_flash = 1;
+ 236   4              traffic_light_signal = 3;
+ 237   4            }
+ 238   3            if (SN_time_now <= 0 && SN_flash == 1)   //黄灯倒计时结束，切换通行方向
+ 239   3                {
+ 240   4              EW_time_now = EW_time_default;
+ 241   4              SN_time_now = SN_time_default;
+C51 COMPILER V9.52.0.0   MAIN                                                              03/21/2019 23:03:24 PAGE 5   
+
+ 242   4              //重置可调节黄灯时间
+ 243   4              EW_Yellow_time_now = EW_Yellow_time_default;
+ 244   4              SN_Yellow_time_now = SN_Yellow_time_default;
+ 245   4              SN_flash = 0;
+ 246   4              SN_or_EW = !SN_or_EW;
+ 247   4            }
+ 248   3            if (EW_time_now <= 0)   //南北方向额外等待时间
+ 249   3                {
+ 250   4              EW_time_now = SN_time_now;
+ 251   4            }
+ 252   3          }
+ 253   2          SN_time_now--;
+ 254   2          EW_time_now--;
+ 255   2        }
+ 256   1      }
+ 257          void Yellow_adjustment() //根据人数调整黄灯时间
+ 258          {
+ 259   1        if (SN_or_EW) {
+ 260   2          EW_Yellow_time_now += sensor1_num + sensor2_num / 3;
+ 261   2          EW_Yellow_time_now =
+ 262   2              (EW_Yellow_time_now > 10) ? 10 : EW_Yellow_time_now;
+ 263   2        } else {
+ 264   2          SN_Yellow_time_now += sensor1_num + sensor2_num / 3;
+ 265   2          SN_Yellow_time_now =
+ 266   2              (SN_Yellow_time_now > 10) ? 10 : SN_Yellow_time_now;
+ 267   2        }
+ 268   1        //行人计数重置
+ 269   1        sensor1_num = 0;
+ 270   1        sensor2_num = 0;
+ 271   1      }
+ 272          
+ 273          void delay(int ms)      //延时子程序
+ 274              {
+ 275   1        unsigned int j, k;
+ 276   1        for (j = 0; j < ms; j++)
+ 277   1          for (k = 0; k < 124; k++)
+ 278   1            ;
+ 279   1      }
+ 280          
+ 281          void Timer0Init()   //50毫秒@11.0592MHz
+ 282          {
+ 283   1      
+ 284   1        TMOD = 0x21;  //设置定时器模式
+ 285   1        TL0 = 0x00;   //设置定时初值
+ 286   1        TH0 = 0x4C;   //设置定时初值
+ 287   1        TF0 = 0;      //清除TF0标志
+ 288   1        TR0 = 1;      //定时器0开始计时
+ 289   1      
+ 290   1        //Time1初始化 波特率9600
+ 291   1        //TMOD = 0x20;  //设置定时器模式
+ 292   1        SCON = 0x50;
+ 293   1        PCON = 0x00;
+ 294   1        TL1 = 0xFD;
+ 295   1        TH1 = 0xFD;
+ 296   1        TR1 = 1;
+ 297   1        ES = 1;
+ 298   1      }
+ 299          void sendChar(unsigned int Value) {
+ 300   1        SBUF = Value;
+ 301   1        flag = 1;
+ 302   1      }
+ 303          
+C51 COMPILER V9.52.0.0   MAIN                                                              03/21/2019 23:03:24 PAGE 6   
+
+ 304          void sensor1()
+ 305          interrupt 0
+ 306          {
+ 307   1        if(!SN_flash || !EW_flash) {
+ 308   2          sensor1_num++;
+ 309   2          sendChar(0);
+ 310   2        }
+ 311   1      }
+ 312          
+ 313          void sensor2()
+ 314          interrupt 2
+ 315          {
+ 316   1        if(!SN_flash || !EW_flash) {
+ 317   2          sensor2_num++;
+ 318   2          sendChar(1);
+ 319   2        }
+ 320   1      }
+ 321          void serial() interrupt 4 {
+ 322   1        if(RI)
+ 323   1        {
+ 324   2          RI = 0;
+ 325   2          P0=SBUF;
+ 326   2        }
+ 327   1      
+ 328   1        if(TI)
+ 329   1        {
+ 330   2          TI = 0;
+ 331   2        }
+ 332   1      }
+ 333          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    819    ----
+   CODE SIZE        =   1180    ----
    CONSTANT SIZE    =     10    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-C51 COMPILER V9.52.0.0   MAIN                                                              03/21/2019 13:56:27 PAGE 5   
-
-   DATA SIZE        =     26    ----
+   DATA SIZE        =     42    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
