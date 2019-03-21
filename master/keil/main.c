@@ -4,15 +4,15 @@
 //倒计时
 unsigned char buf[4];							//片选数码管变量
 unsigned int EW_time_default = 15;  	  //东西默认值
-unsigned int SN_time_default = 10;			//南北默认值
+unsigned int SN_time_default = 15;			//南北默认值
 unsigned int EW_time_now = 15;		//东西方向当前数秒
-unsigned int SN_time_now = 10;		//南北方向当前数秒
+unsigned int SN_time_now = 15;		//南北方向当前数秒
 
 //通行
-unsigned int SN_or_EW=1; //0：南北通行 1：东西通行
-unsigned int Open=1;
-unsigned int SN_flash=0; //南北黄灯闪烁标志
-unsigned int EW_flash=0; //东西黄灯闪烁标志
+unsigned int SN_or_EW = 1; //0：南北通行 1：东西通行
+unsigned int Open = 1;
+unsigned int SN_flash = 0; //南北黄灯闪烁标志
+unsigned int EW_flash = 0; //东西黄灯闪烁标志
 
 //字型码
 unsigned char code LED[] = {0xc0, 0xf9, 0xa4, 0xb0, 0x99, 0x92, 0x82, 0xf8, 0x80, 0x90};
@@ -45,7 +45,7 @@ void main()
 {
     init();
     while (1) {
-      display();
+        display();
     }
 }
 
@@ -53,8 +53,14 @@ void init()
 {
     //开总中断
     EA = 1;
-	  ET0 = 1;      //开定时器0
-    //定时器0
+		//外部中断
+		IT0=1; //跳变沿
+		EX0=1;//中断允许
+		IT1=1; //跳变沿
+		EX1=1;//中断允许
+	
+    ET0 = 1;      //开定时器0
+    //定时器0初始化
     Timer0Init();
 }
 
@@ -63,19 +69,19 @@ void time0() interrupt 1
     //重置定时器
     TH0 = 0x4c;
     TL0 = 0x00;
-		//调整信号灯
-		traffic_light();
-	  //调整倒计时
-		LED_light();
-	  //调整黄灯
-		flash();
+    //调整信号灯
+    traffic_light();
+    //调整倒计时
+    LED_light();
+    //调整黄灯
+    flash();
 }
 
 void display() //显示子程序
 {
 
-	    
-	
+
+
     //南北方向个位十位
     buf[0] = SN_time_now / 10;
     buf[1] = SN_time_now % 10;
@@ -86,94 +92,115 @@ void display() //显示子程序
     //点亮南北方向倒计时
     P1 = 0x01;           		//片选LED1
     P0 = LED[buf[0]];			//送南北时间十位的数码管编码
-    delay(1);				//延时			
-	
+    delay(1);				//延时
+
     P1 = 0x02;             	//片选LED2
     P0 = LED[buf[1]];
     delay(1);
-		
+
     P1 = 0X04;		  		//片选LED3
     P0 = LED[buf[2]];		    //送东西时间十位的数码管编码
     delay(1);				//延时
-		
+
     P1 = 0X08;				//片选LED4
     P0 = LED[buf[3]];
-    delay(1);	
+    delay(1);
 }
 
 void traffic_light() //信号灯
-{         //
-	if((SN_or_EW))
-	{
-		//东西方向通行  绿灯亮
-    if(EW_time_now>5){Green_EW=Open;EW_flash=!Open;} //小于5s时，黄灯闪烁
-		else{Green_EW=!Open;EW_flash=Open;}
-		Red_EW=!Open;
-		//南北方向进禁行 红灯亮
-		SN_flash=!Open;  //关闭黄灯
-		Green_SN=!Open;
-		Red_SN=Open;
-  }
-	else{
-		//东西方向禁行  红灯亮
-		EW_flash=!Open; //关闭黄灯
-    Green_EW=!Open;
-		Red_EW=Open;
-		//南北方向通行绿灯亮
-		if(SN_time_now>5){Green_SN=Open;SN_flash=!Open;} //小于5s时，黄灯闪烁
-		else{Green_SN=!Open; SN_flash=Open;}
-		Red_SN=!Open;
-}
+{
+    //
+    if((SN_or_EW)) {
+        //东西方向通行  绿灯亮
+        if(EW_time_now > 5) {
+            Green_EW = Open;    //小于5s时，黄灯闪烁
+            EW_flash = !Open;
+        } else {
+            Green_EW = !Open;
+            EW_flash = Open;
+        }
+        Red_EW = !Open;
+        //南北方向进禁行 红灯亮
+        SN_flash = !Open; //关闭黄灯
+        Green_SN = !Open;
+        Red_SN = Open;
+    } else {
+        //东西方向禁行  红灯亮
+        EW_flash = !Open; //关闭黄灯
+        Green_EW = !Open;
+        Red_EW = Open;
+        //南北方向通行绿灯亮
+        if(SN_time_now > 5) {
+            Green_SN = Open;    //小于5s时，黄灯闪烁
+            SN_flash = !Open;
+        } else {
+            Green_SN = !Open;
+            SN_flash = Open;
+        }
+        Red_SN = !Open;
+    }
 }
 
 void flash()
 {
-	flash_count++;
-	if(flash_count>=10)  //0.5s闪烁一次
-		{
-			flash_count=0;
-			flash_signl++;
-			if(flash_signl>10)
-				flash_signl=0; //闪烁信号清零
-			
-			//黄灯闪烁
-			if(SN_flash) {Yellow_SN=flash_signl%2;}
-			else {Yellow_SN=!Open;}
-			if(EW_flash) {Yellow_EW=flash_signl%2;}
-			else {Yellow_EW=!Open;}
-		}
+    flash_count++;
+    if(flash_count >= 10) { //0.5s闪烁一次
+        flash_count = 0;
+        flash_signl++;
+        if(flash_signl > 10)
+            flash_signl = 0; //闪烁信号清零
+
+        //黄灯闪烁
+        if(SN_flash) {
+            Yellow_SN = flash_signl % 2;
+        } else {
+            Yellow_SN = !Open;
+        }
+        if(EW_flash) {
+            Yellow_EW = flash_signl % 2;
+        } else {
+            Yellow_EW = !Open;
+        }
+    }
 }
 
 void LED_light() //倒计时
 {
-		time0_count++;
-    if(time0_count >= 20) 
-		{
-			//每秒检测一次，归零后重置，并切换通行方向
+    time0_count++;
+    if(time0_count >= 20) {
+        //每秒检测一次，归零后重置，并切换通行方向
         time0_count = 0;
-			//东西通行
-        //if((SN_or_EW?EW_time_now:SN_time_now) > 0) {
-			if((SN_or_EW?EW_time_now:SN_time_now) > 0) {
-            SN_time_now--;
-					  EW_time_now--;
-						if(((!SN_or_EW)?EW_time_now:SN_time_now)<=0)
-						 {
-							 if(SN_time_now>EW_time_now)
-									EW_time_now=5;
-							if(EW_time_now>SN_time_now)
-									SN_time_now=5;}
-        } else {
-						if(!SN_or_EW){
-            SN_time_now = SN_time_default;
-					  EW_time_now = EW_time_default;
-						}
-						else{
-            SN_time_now = SN_time_default;
-					  EW_time_now = SN_time_default;
-						}
-						SN_or_EW=!SN_or_EW;
+        //东西通行
+        if(SN_or_EW) {
+            if(EW_time_now > 0) {
+                EW_time_now--;
+                if(SN_time_now > 0) {
+                    SN_time_now--;
+                } else {
+                    SN_time_now = EW_time_now;
+                }
+            } else {
+								EW_time_now=EW_time_default;
+								SN_time_now=SN_time_default;
+                SN_or_EW = !SN_or_EW;
+            }
         }
-			}
+				//南北通行
+				else {
+            if(SN_time_now > 0) {
+                SN_time_now--;
+                if(EW_time_now > 0) {
+                    EW_time_now--;
+                } else {
+                    EW_time_now = SN_time_now;
+                }
+            } else {
+								EW_time_now=EW_time_default;
+								SN_time_now=SN_time_default;
+                SN_or_EW = !SN_or_EW;
+            }
+        }
+    }
 }
 
 void delay(int ms)			//延时子程序
@@ -191,5 +218,17 @@ void Timer0Init()		//50毫秒@11.0592MHz
     TH0 = 0x4C;		//设置定时初值
     TF0 = 0;		  //清除TF0标志
     TR0 = 1;		  //定时器0开始计时
+}
+
+void sensor1() interrupt 0
+{
+	delay(100);//延时消抖
+	SN_time_now+=5;
+}
+
+void sensor2() interrupt 2
+{
+	delay(100);//延时消抖
+	EW_time_now+=5;
 }
 
