@@ -265,6 +265,9 @@ void Yellow_adjustment() //根据人数调整黄灯时间
 		SN_Yellow_time_now =
 				(SN_Yellow_time_now > 10) ? 10 : SN_Yellow_time_now;
 	}
+	//发送当前数据到后台
+	sendChar(sensor1_num+sensor1_num);
+	
 	//行人计数重置
 	sensor1_num = 0;
 	sensor2_num = 0;
@@ -306,7 +309,6 @@ interrupt 0
 {
 	if(!SN_flash || !EW_flash) {
 		sensor1_num++;
-		sendChar(0);
 	}
 }
 
@@ -315,7 +317,6 @@ interrupt 2
 {
 	if(!SN_flash || !EW_flash) {
 		sensor2_num++;
-		sendChar(1);
 	}
 }
 void serial() interrupt 4 {
