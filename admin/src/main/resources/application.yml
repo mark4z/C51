@@ -1,0 +1,20 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+    show-sql: false
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+
+  datasource:
+    url: jdbc:mysql://120.77.45.136:3306/zm?characterEncoding=UTF-8&nullCatalogMeansCurrent=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8
+    username: anymre
+    password: c1234567
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  mvc:
+    view:
+      prefix: classpath:/templates/
+      suffix: .html

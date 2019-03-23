@@ -308,15 +308,34 @@ void sensor1()
 interrupt 0
 {
 	if(!SN_flash || !EW_flash) {
-		sensor1_num++;
-	}
+		//考虑到路口两边探测器行人检测重复问题，绿灯开始5s后停止计数。
+		if(SN_or_EW)
+			{
+				if(EW_time_now>(EW_time_default-5))
+					sensor1_num++;
+			}
+			else
+				{
+				if(SN_time_now>(SN_time_default-5))
+					sensor1_num++;
+			}
 }
+	}
 
 void sensor2()
 interrupt 2
 {
 	if(!SN_flash || !EW_flash) {
-		sensor2_num++;
+				if(SN_or_EW)
+			{
+				if(EW_time_now>(EW_time_default-5))
+					sensor2_num++;
+			}
+			else
+				{
+				if(SN_time_now>(SN_time_default-5))
+					sensor2_num++;
+			}
 	}
 }
 void serial() interrupt 4 {
