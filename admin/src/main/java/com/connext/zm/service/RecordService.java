@@ -8,4 +8,6 @@ public interface RecordService {
     void insert(Record record);
 
     List<Record> getAll();
+
+    void remoteControl(int signal);
 }

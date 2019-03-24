@@ -1,26 +1,20 @@
 package com.connext.zm.service;
 
-import com.connext.zm.dao.UserRepository;
+import com.connext.zm.service.impl.UserServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-
-import javax.transaction.Transactional;
-
-import static org.junit.Assert.*;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
-
-public class UserServiceTest {
+public class RecordServiceTest {
     @Autowired
-    private UserService userService;
+    private RecordService recordService;
 
     @Test
-    public void createUser() {
-        userService.CreateUser("admin", "123456");
+    public void send() {
+        recordService.remoteControl(0);
     }
 }

@@ -7,6 +7,7 @@ import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
+import net.bytebuddy.asm.Advice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +22,14 @@ import java.io.OutputStream;
  * This version of the TwoWaySerialComm example makes use of the
  * SerialPortEventListener to avoid polling.
  */
-
+@Component
 public class TwoWaySerialComm {
+
+    SerialPort port;
+    private final RecordService recordService=null;
 
     private final static Logger logger = LoggerFactory.getLogger(TwoWaySerialComm.class);
 
-    public TwoWaySerialComm() {
-        super();
-    }
 
     void connect(String portName) throws Exception {
         CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
@@ -44,10 +45,11 @@ public class TwoWaySerialComm {
                 InputStream in = serialPort.getInputStream();
                 OutputStream out = serialPort.getOutputStream();
 
-                (new Thread(new SerialWriter(out))).start();
+                //(new Thread(new SerialWriter(out))).start();
 
                 serialPort.addEventListener(new SerialReader(in));
                 serialPort.notifyOnDataAvailable(true);
+                this.port = serialPort;
 
             } else {
                 System.out.println("Error: Only serial ports are handled by this example.");
@@ -81,7 +83,8 @@ public class TwoWaySerialComm {
                 logger.info("当前有" + bytesToIntString(buffer) + "个行人经过！");
                 Record record = new Record();
                 record.setNum(Integer.parseInt(bytesToIntString(buffer)));
-                SpringUtil.getBean(RecordService.class).insert(record);
+                //SpringUtil.getBean(RecordService.class).insert(record);
+                recordService.insert(record);
             } catch (IOException e) {
                 e.printStackTrace();
                 System.exit(-1);
@@ -93,28 +96,8 @@ public class TwoWaySerialComm {
     /**
      *
      */
-    public class SerialWriter implements Runnable {
-        OutputStream out;
 
-        public SerialWriter(OutputStream out) {
-            this.out = out;
-        }
-
-        public void run() {
-            try {
-                int c = 0;
-                while ((c = System.in.read()) > -1) {
-                    this.out.write(c);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.exit(-1);
-            }
-        }
-    }
-
-
-    public static String bytesToIntString(byte[] src) {
+    private String bytesToIntString(byte[] src) {
         StringBuilder stringBuilder = new StringBuilder("");
         if (src == null || src.length <= 0) {
             return null;
@@ -128,5 +111,26 @@ public class TwoWaySerialComm {
             stringBuilder.append(hv);
         }
         return String.valueOf(Integer.parseInt(stringBuilder.toString(), 16));
+    }
+
+    void sendData(byte data) {
+        OutputStream os = null;
+        SerialPort serialPort = this.port;
+        try {
+            os = serialPort.getOutputStream();//获得串口的输出流
+            os.write(data);
+            os.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (os != null) {
+                    os.close();
+                    os = null;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
