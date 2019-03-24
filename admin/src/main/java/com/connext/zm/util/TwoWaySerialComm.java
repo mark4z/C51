@@ -7,11 +7,9 @@ import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
-import net.bytebuddy.asm.Advice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -26,9 +24,14 @@ import java.io.OutputStream;
 public class TwoWaySerialComm {
 
     SerialPort port;
-    private final RecordService recordService=null;
+    @Autowired
+    private final RecordService recordService;
 
     private final static Logger logger = LoggerFactory.getLogger(TwoWaySerialComm.class);
+
+    public TwoWaySerialComm(RecordService recordService) {
+        this.recordService = recordService;
+    }
 
 
     void connect(String portName) throws Exception {

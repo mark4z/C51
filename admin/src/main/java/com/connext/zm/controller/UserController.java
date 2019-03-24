@@ -1,18 +1,17 @@
 package com.connext.zm.controller;
 
-import com.connext.zm.entity.Authority;
 import com.connext.zm.entity.User;
 import com.connext.zm.service.UserService;
+import com.connext.zm.util.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Controller
+@RestController
 @RequestMapping("/user")
 public class UserController {
     private final UserService userService;
@@ -23,34 +22,38 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public String allUser(Model model) {
-        model.addAttribute("users", userService.allUser());
-        return "index";
+    public List<User> allUser(Model model) {
+        return userService.allUser();
     }
 
     @PostMapping("/add")
-    @ResponseBody
-    public String addUser(@RequestParam String username, @RequestParam String password) {
-        userService.CreateUser(username, password);
-        return "Success";
+    public void addUser(@RequestParam String username, @RequestParam String password, @RequestParam String roles) {
+        try {
+            userService.CreateUser(username, password);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        List<String> role = Arrays.asList(roles.split(","));
+        userService.setRole(username, role);
     }
 
-    @GetMapping("/{username}")
-    public User getUser(@PathVariable String username) {
-        return userService.getUser(username);
+    @GetMapping("/roles")
+    public List<String> getUser() {
+        List<String> roles = new ArrayList<>();
+        User user = userService.getUser();
+        user.getAuthorities().forEach(i -> roles.add(i.getName()));
+        return roles;
     }
 
-    @GetMapping("/{username}/role")
-    public String getUserRole(@PathVariable String username, Model model) {
-        User user = userService.getUser(username);
-        model.addAttribute("user", user);
-        model.addAttribute("role", user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toList()));
-        return "user_role";
+    @GetMapping("/{username}/delete")
+    public Data deleteUser(@PathVariable String username) {
+        Data data = new Data();
+        userService.delete(username);
+        return data;
     }
 
     @PostMapping("/{username}/role")
-    @ResponseBody
-    public String setRole(@PathVariable String username, @RequestParam String role) {
+    public String setRole(@PathVariable String username, String role) {
         List<String> roles = Arrays.asList(role.split(","));
         userService.setRole(username, roles);
         return "Success";

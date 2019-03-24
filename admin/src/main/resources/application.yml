@@ -13,8 +13,3 @@ spring:
     username: anymre
     password: c1234567
     driver-class-name: com.mysql.cj.jdbc.Driver
-
-  mvc:
-    view:
-      prefix: classpath:/templates/
-      suffix: .html

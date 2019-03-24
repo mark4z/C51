@@ -1,5 +1,5 @@
-install
 *.lnk
 *.mp4
 *.plg
 eclipse
+backoffice/node_modules

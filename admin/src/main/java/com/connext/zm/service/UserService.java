@@ -25,10 +25,9 @@ public interface UserService {
 
     /**
      * Find a user.
-     * @param username user's id
      * @return a user.
      */
-    User getUser(String username);
+    User getUser();
 
-
+    void delete(String username);
 }

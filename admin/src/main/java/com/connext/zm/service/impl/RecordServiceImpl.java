@@ -13,12 +13,11 @@ import java.util.List;
 public class RecordServiceImpl implements RecordService {
 
     private final RecordRepository recordRepository;
-    private final SerialUtil serialUtil;
+    //private final SerialUtil serialUtil;
 
     @Autowired
-    public RecordServiceImpl(RecordRepository recordRepository, SerialUtil serialUtil) {
+    public RecordServiceImpl(RecordRepository recordRepository) {
         this.recordRepository = recordRepository;
-        this.serialUtil = serialUtil;
     }
 
     @Override
@@ -33,6 +32,6 @@ public class RecordServiceImpl implements RecordService {
 
     @Override
     public void remoteControl(int signal) {
-        serialUtil.send(signal);
+        //serialUtil.send(signal);
     }
 }
