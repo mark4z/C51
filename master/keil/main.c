@@ -32,6 +32,7 @@ unsigned int flash_signl; //闪烁计数信号
 
 //后台通信
 unsigned int flag = 0;
+unsigned int countdown_signal=1;//正常倒计时标志位
 
 //红绿灯
 sbit Green_EW = P2 ^ 1;		//东西
@@ -52,13 +53,13 @@ void LED_light();      //控制倒计时
 void flash();			//黄灯闪烁
 void Yellow_adjustment();			//根据行人数量调整时间
 void sendChar(unsigned int Value);			//发送消息
+void romete_control(unsigned int romete_control_signal); //远程控制
+void soft_reset();//软重启
 
 void main() {
 	init();
 	while (1) {
 		display();
-		//调整信号灯
-		traffic_light();
 	}
 }
 
@@ -84,8 +85,25 @@ interrupt 1
 	TL0 = 0x00;
 	//调整倒计时
 	LED_light();
+	//调整信号灯
+	traffic_light();
 	//调整黄灯
 	flash();
+}
+
+void romete_control(unsigned int romete_control_signal)//远程控制
+{
+	switch (romete_control_signal)
+	{
+	case 0://正常模式
+	traffic_light_signal=0;countdown_signal=1;SN_time_now=SN_time_default;EW_time_now=EW_time_default;break;
+	case 1://强制东西通行
+	EW_time_now=99;SN_time_now=99;traffic_light_signal=0;countdown_signal=0;break;
+	case 2://强制南北通信
+	EW_time_now=99;SN_time_now=99;traffic_light_signal=2;countdown_signal=0;break;
+	case 3://禁止通行
+	EW_time_now=99;SN_time_now=99;traffic_light_signal=4;countdown_signal=0;break;
+}
 }
 
 void display() //显示子程序
@@ -160,6 +178,16 @@ void traffic_light() //信号灯
 		SN_flash = Open;
 
 		break;
+		case 4: //禁止通行
+		Green_EW = !Open;
+		Red_EW = Open;
+		EW_flash = !Open;
+
+		Green_SN = !Open;
+		Red_SN = Open;
+		SN_flash = !Open;
+
+		break;
 	}
 }
 
@@ -188,7 +216,7 @@ void flash() {
 void LED_light() //倒计时
 {
 	time0_count++;
-	if (time0_count >= 19) {
+	if (time0_count >= 20 &&countdown_signal) {
 		//每秒检测一次，归零后重置，并切换通行方向
 		time0_count = 0;
 		//东西通行
@@ -320,7 +348,7 @@ interrupt 0
 					sensor1_num++;
 			}
 }
-	}
+}
 
 void sensor2()
 interrupt 2
@@ -342,12 +370,16 @@ void serial() interrupt 4 {
 	if(RI)
 	{
 		RI = 0;
-		P0=SBUF;
+		romete_control(SBUF);
 	}
 
 	if(TI)
 	{
 		TI = 0;
 	}
+}
+void soft_reset()
+{
+((void (code *) (void)) 0x0000) ();
 }
 
