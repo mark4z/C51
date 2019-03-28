@@ -4,10 +4,12 @@
 unsigned char buf[4];							//片选数码管变量
 unsigned int EW_time_default = 15;  	  //东西默认值
 unsigned int SN_time_default = 15;			//南北默认值
+
+unsigned int EW_time_adj = 15;  	  //东西调整值
+unsigned int SN_time_adj = 15;			//南北调整值
+
 unsigned int EW_time_now = 7;		//东西方向当前数秒
 unsigned int SN_time_now = 10;		//南北方向当前数秒
-unsigned int SN_Yellow_time_default = 3;		//南北方向黄灯
-unsigned int EW_Yellow_time_default = 3;		//东西方向黄灯
 unsigned int SN_Yellow_time_now = 3;		//南北方向黄灯
 unsigned int EW_Yellow_time_now = 3;		//东西方向黄灯
 
@@ -21,6 +23,7 @@ unsigned int EW_flash = 0; //东西黄灯闪烁标志
 //智能延时
 unsigned int sensor1_num = 0;
 unsigned int sensor2_num = 0;
+unsigned int delay_sec=0;
 
 //字型码
 unsigned char code LED[] = {0xc0, 0xf9, 0xa4, 0xb0, 0x99, 0x92, 0x82, 0xf8, 0x80, 0x90};
@@ -51,7 +54,7 @@ void Timer0Init();       //定时器0
 void traffic_light(); //控制信号灯
 void LED_light();      //控制倒计时
 void flash();			//黄灯闪烁
-void Yellow_adjustment();			//根据行人数量调整时间
+void adjustment();			//根据行人数量调整时间
 void sendChar(unsigned int Value);			//发送消息
 void romete_control(unsigned int romete_control_signal); //远程控制
 void soft_reset();//软重启
@@ -219,6 +222,8 @@ void LED_light() //倒计时
 	if (time0_count >= 20 &&countdown_signal) {
 		//每秒检测一次，归零后重置，并切换通行方向
 		time0_count = 0;
+		SN_time_now--;
+		EW_time_now--;
 		//东西通行
 		if (SN_or_EW) {
 			if (EW_time_now > 0 && EW_flash == 0) //正常绿灯
@@ -228,18 +233,19 @@ void LED_light() //倒计时
 			}
 			if (EW_time_now <= 0 && EW_flash == 0) //绿灯倒计时结束，切换黄灯
 					{
-				Yellow_adjustment();
 				EW_time_now = EW_Yellow_time_now;
 				EW_flash = 1;
 				traffic_light_signal = 1;
 			}
 			if (EW_time_now <= 0 && EW_flash == 1) //黄灯倒计时结束，切换通行方向
 					{
-				EW_time_now = EW_time_default;
-				SN_time_now = SN_time_default;
-				//重置可调节黄灯时间
-				EW_Yellow_time_now = EW_Yellow_time_default;
-				SN_Yellow_time_now = SN_Yellow_time_default;
+				adjustment();
+				EW_time_now = EW_time_adj;
+				SN_time_now = SN_time_adj;
+
+				SN_time_adj=SN_time_default;
+				EW_time_adj=EW_time_default;
+
 
 				EW_flash = 0;
 				SN_or_EW = !SN_or_EW;
@@ -258,18 +264,18 @@ void LED_light() //倒计时
 			}
 			if (SN_time_now <= 0 && SN_flash == 0)   //绿灯倒计时结束，切换黄灯
 					{
-				Yellow_adjustment();
 				SN_time_now = SN_Yellow_time_now;
 				SN_flash = 1;
 				traffic_light_signal = 3;
 			}
 			if (SN_time_now <= 0 && SN_flash == 1)   //黄灯倒计时结束，切换通行方向
 					{
-				EW_time_now = EW_time_default;
-				SN_time_now = SN_time_default;
-				//重置可调节黄灯时间
-				EW_Yellow_time_now = EW_Yellow_time_default;
-				SN_Yellow_time_now = SN_Yellow_time_default;
+				adjustment();
+				EW_time_now = EW_time_adj;
+				SN_time_now = SN_time_adj;
+				SN_time_adj=SN_time_default;
+				EW_time_adj=EW_time_default;
+						
 				SN_flash = 0;
 				SN_or_EW = !SN_or_EW;
 			}
@@ -278,24 +284,22 @@ void LED_light() //倒计时
 				EW_time_now = SN_time_now;
 			}
 		}
-		SN_time_now--;
-		EW_time_now--;
 	}
 }
-void Yellow_adjustment() //根据人数调整黄灯时间
+void adjustment() //根据人数调整绿灯时间
 {
+			delay_sec += (sensor1_num + sensor2_num) / 3;
+		  delay_sec=(delay_sec>10)? 10 :delay_sec;
 	if (SN_or_EW) {
-		EW_Yellow_time_now += sensor1_num + sensor2_num / 3;
-		EW_Yellow_time_now =
-				(EW_Yellow_time_now > 10) ? 10 : EW_Yellow_time_now;
+			SN_time_adj+=delay_sec;
 	} else {
-		SN_Yellow_time_now += sensor1_num + sensor2_num / 3;
-		SN_Yellow_time_now =
-				(SN_Yellow_time_now > 10) ? 10 : SN_Yellow_time_now;
+			EW_time_adj+=delay_sec;
 	}
 	//发送当前数据到后台
 	sendChar(sensor1_num+sensor1_num);
 	
+	//调整时间清零
+	delay_sec=0;
 	//行人计数重置
 	sensor1_num = 0;
 	sensor2_num = 0;
@@ -335,36 +339,13 @@ void sendChar(unsigned int Value) {
 void sensor1()
 interrupt 0
 {
-	if(!SN_flash || !EW_flash) {
-		//考虑到路口两边探测器行人检测重复问题，绿灯开始5s后停止计数。
-		if(SN_or_EW)
-			{
-				if(EW_time_now>(EW_time_default-5))
 					sensor1_num++;
-			}
-			else
-				{
-				if(SN_time_now>(SN_time_default-5))
-					sensor1_num++;
-			}
-}
 }
 
 void sensor2()
 interrupt 2
 {
-	if(!SN_flash || !EW_flash) {
-				if(SN_or_EW)
-			{
-				if(EW_time_now>(EW_time_default-5))
 					sensor2_num++;
-			}
-			else
-				{
-				if(SN_time_now>(SN_time_default-5))
-					sensor2_num++;
-			}
-	}
 }
 void serial() interrupt 4 {
 	if(RI)
