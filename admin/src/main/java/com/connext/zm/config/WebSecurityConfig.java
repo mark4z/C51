@@ -23,7 +23,7 @@ import java.io.IOException;
  * @Date: 2018/12/21 10:18
  * @Version 1.0
  */
-//@Configuration
+@Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailServiceImpl userDetailService;
 
