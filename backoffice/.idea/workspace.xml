@@ -1,45 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f0a3010e-a1b1-463b-8a76-6578e747caab" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../admin/src/main/resources/static/css/login.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../admin/src/main/resources/static/images/1.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../admin/src/main/resources/static/images/2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../admin/src/main/resources/static/images/3.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../admin/src/main/resources/templates/login.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/views/recordList.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../admin/src/main/java/com/connext/zm/ZmApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../admin/src/main/java/com/connext/zm/ZmApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../admin/src/main/java/com/connext/zm/config/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../admin/src/main/java/com/connext/zm/config/WebSecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../admin/src/main/java/com/connext/zm/controller/IndexControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../admin/src/main/java/com/connext/zm/controller/IndexControl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../admin/src/main/java/com/connext/zm/controller/RecordControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../admin/src/main/java/com/connext/zm/controller/RecordControl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../admin/src/main/java/com/connext/zm/dao/RecordRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../admin/src/main/java/com/connext/zm/dao/RecordRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../admin/src/main/java/com/connext/zm/service/RecordService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../admin/src/main/java/com/connext/zm/service/RecordService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../admin/src/main/java/com/connext/zm/service/impl/RecordServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../admin/src/main/java/com/connext/zm/service/impl/RecordServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../admin/src/main/java/com/connext/zm/service/impl/UserDetailServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../admin/src/main/java/com/connext/zm/service/impl/UserDetailServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../admin/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../admin/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../admin/src/test/java/com/connext/zm/service/RecordServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../admin/src/test/java/com/connext/zm/service/RecordServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/menu_left.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/menu_left.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/router.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/router.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/Home.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Home.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/user.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/user.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../master/keil/STARTUP.LST" beforeDir="false" afterPath="$PROJECT_DIR$/../master/keil/STARTUP.LST" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../master/keil/STARTUP.OBJ" beforeDir="false" afterPath="$PROJECT_DIR$/../master/keil/STARTUP.OBJ" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../master/keil/main.LST" beforeDir="false" afterPath="$PROJECT_DIR$/../master/keil/main.LST" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../master/keil/main.OBJ" beforeDir="false" afterPath="$PROJECT_DIR$/../master/keil/main.OBJ" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../master/keil/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/../master/keil/main.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../master/keil/zm" beforeDir="false" afterPath="$PROJECT_DIR$/../master/keil/zm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../master/keil/zm.M51" beforeDir="false" afterPath="$PROJECT_DIR$/../master/keil/zm.M51" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../master/keil/zm.hex" beforeDir="false" afterPath="$PROJECT_DIR$/../master/keil/zm.hex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../master/keil/zm.uvgui.c" beforeDir="false" afterPath="$PROJECT_DIR$/../master/keil/zm.uvgui.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../master/keil/zm.uvgui_c.bak" beforeDir="false" afterPath="$PROJECT_DIR$/../master/keil/zm.uvgui_c.bak" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../master/keil/zm.uvopt" beforeDir="false" afterPath="$PROJECT_DIR$/../master/keil/zm.uvopt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nginx-1.15.9/conf/nginx.conf" beforeDir="false" afterPath="$PROJECT_DIR$/../nginx-1.15.9/conf/nginx.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nginx-1.15.9/logs/access.log" beforeDir="false" afterPath="$PROJECT_DIR$/../nginx-1.15.9/logs/access.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nginx-1.15.9/logs/error.log" beforeDir="false" afterPath="$PROJECT_DIR$/../nginx-1.15.9/logs/error.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../nginx-1.15.9/logs/nginx.pid" beforeDir="false" afterPath="$PROJECT_DIR$/../nginx-1.15.9/logs/nginx.pid" afterDir="false" />
-    </list>
+    <list default="true" id="f0a3010e-a1b1-463b-8a76-6578e747caab" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/dist/" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -51,38 +13,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/views/recordList.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="95">
-              <caret line="17" column="29" selection-start-line="17" selection-start-column="29" selection-end-line="17" selection-end-column="29" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/router.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="437">
-              <caret line="29" column="19" selection-start-line="29" selection-start-column="19" selection-end-line="29" selection-end-column="26" />
-              <folding>
-                <element signature="e#0#21#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/menu_left.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="415">
-              <caret line="74" column="28" lean-forward="true" selection-start-line="74" selection-start-column="28" selection-end-line="74" selection-end-column="28" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -122,19 +53,7 @@
             <path>
               <item name="backoffice" type="b2602c69:ProjectViewProjectNode" />
               <item name="backoffice" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="backoffice" type="b2602c69:ProjectViewProjectNode" />
-              <item name="backoffice" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="backoffice" type="b2602c69:ProjectViewProjectNode" />
-              <item name="backoffice" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="dist" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -189,16 +108,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1553935390544</updated>
-      <workItem from="1553935393551" duration="4839000" />
+      <workItem from="1553935393551" duration="5070000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4839000" />
+    <option name="totallyTimeSpent" value="5070000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="22" width="1382" height="754" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="npm" side_tool="true" />
       <window_info id="Favorites" side_tool="true" />
@@ -255,16 +173,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/router.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="29" column="19" selection-start-line="29" selection-start-column="19" selection-end-line="29" selection-end-column="26" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/views/user.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="171">
@@ -277,17 +185,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/recordList.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="21" column="11" lean-forward="true" selection-start-line="21" selection-start-column="11" selection-end-line="21" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/router.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="437">
+          <caret line="29" column="19" selection-start-line="29" selection-start-column="19" selection-end-line="29" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/menu_left.vue">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="415">
           <caret line="74" column="28" lean-forward="true" selection-start-line="74" selection-start-column="28" selection-end-line="74" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/recordList.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="17" column="29" selection-start-line="17" selection-start-column="29" selection-end-line="17" selection-end-column="29" />
         </state>
       </provider>
     </entry>
