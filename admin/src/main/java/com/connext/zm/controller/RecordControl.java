@@ -4,6 +4,7 @@ import com.connext.zm.entity.Record;
 import com.connext.zm.service.RecordService;
 import com.connext.zm.util.SerialUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,23 +22,38 @@ public class RecordControl {
     }
 
     @GetMapping("/all")
-    List<Record> all(){
+    List<Record> all() {
         return recordService.getAll();
     }
+
+    @GetMapping("/today")
+    List<Record> today() {
+        return recordService.getToday();
+    }
+
+    @GetMapping("/page/{page}")
+    Page<Record> today(@PathVariable Integer page) {
+        return recordService.getAllByPage(page);
+    }
+
+
     @GetMapping("/normal")
-    void normal(){
+    void normal() {
         serialUtil.send(0);
     }
+
     @GetMapping("/ew")
-    void ew(){
+    void ew() {
         serialUtil.send(1);
     }
+
     @GetMapping("/sn")
-    void sn(){
+    void sn() {
         serialUtil.send(2);
     }
+
     @GetMapping("/stop")
-    void stop(){
+    void stop() {
         serialUtil.send(3);
     }
 }

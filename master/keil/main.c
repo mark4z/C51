@@ -239,15 +239,15 @@ void LED_light() //倒计时
 			}
 			if (EW_time_now <= 0 && EW_flash == 1) //黄灯倒计时结束，切换通行方向
 					{
-				adjustment();
-				EW_time_now = EW_time_adj;
+				EW_flash = 0; //关闭黄灯
+				adjustment();//调节绿灯时间
+				EW_time_now = SN_time_adj+EW_Yellow_time_now; 
 				SN_time_now = SN_time_adj;
 
 				SN_time_adj=SN_time_default;
 				EW_time_adj=EW_time_default;
 
 
-				EW_flash = 0;
 				SN_or_EW = !SN_or_EW;
 			}
 			if (SN_time_now <= 0)   //东西方向额外等待时间
@@ -271,8 +271,8 @@ void LED_light() //倒计时
 			if (SN_time_now <= 0 && SN_flash == 1)   //黄灯倒计时结束，切换通行方向
 					{
 				adjustment();
-				EW_time_now = EW_time_adj;
-				SN_time_now = SN_time_adj;
+				EW_time_now = EW_time_adj; 
+				SN_time_now = EW_time_now+SN_Yellow_time_now;
 				SN_time_adj=SN_time_default;
 				EW_time_adj=EW_time_default;
 						

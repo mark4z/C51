@@ -1,0 +1,56 @@
+body {
+    background: url("/images/3.jpg");
+    animation-name: myfirst;
+    animation-duration: 12s;
+    /*变换时间*/
+    animation-delay: 2s;
+    /*动画开始时间*/
+    animation-iteration-count: infinite;
+    /*下一周期循环播放*/
+    animation-play-state: running;
+    /*动画开始运行*/
+}
+
+/*@keyframes myfirst {*/
+    /*0% {*/
+        /*background: url("/images/1.jpg");*/
+    /*}*/
+    /*34% {*/
+        /*background: url("/images/2.jpg");*/
+    /*}*/
+    /*67% {*/
+        /*background: url("/images/3.jpg");*/
+    /*}*/
+    /*100% {*/
+        /*background: url("/images/1.jpg");*/
+    /*}*/
+/*}*/
+
+.inner {
+    background: hsla(0, 0%, 100%, .3);
+}
+
+
+.form-title {
+    text-align: center;
+}
+
+.form {
+    background: rgba(255, 255, 255, 0.2);
+    width: 400px;
+    margin: 120px auto;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 26px;
+    padding-bottom: 26px;
+}
+
+/*阴影*/
+.fa {
+    display: inline-block;
+    top: 27px;
+    left: 6px;
+    position: relative;
+    color: #ccc;
+}
+

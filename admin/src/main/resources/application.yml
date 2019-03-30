@@ -13,3 +13,6 @@ spring:
     username: anymre
     password: c1234567
     driver-class-name: com.mysql.cj.jdbc.Driver
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8

@@ -46,7 +46,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
             }));
             return new org.springframework.security.core.userdetails.User(user.get().getUsername(), user.get().getPassword(), list);
         } else {
-            throw new BadCredentialsException("no reg!");
+            throw new BadCredentialsException("用户未注册!");
         }
     }
 }

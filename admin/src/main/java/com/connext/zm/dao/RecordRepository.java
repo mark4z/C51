@@ -6,6 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,4 +20,6 @@ public interface RecordRepository extends CrudRepository<Record, Integer> {
     List<Record> findAll();
 
     Page<Record> findAll(Pageable page);
+
+    List<Record> findByTimeAfter(Date today);
 }

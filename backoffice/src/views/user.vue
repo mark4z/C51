@@ -9,11 +9,6 @@
                     width="180">
             </el-table-column>
             <el-table-column
-                    prop="password"
-                    label="密码"
-                    width="180">
-            </el-table-column>
-            <el-table-column
                     prop="time"
                     label="创建时间">
             </el-table-column>
@@ -60,7 +55,7 @@
                 },
                     {
                         key: 'view',
-                        label: `流量监控`,
+                        label: `流量记录`,
                     }, {
                         key: 'action',
                         label: `远程控制`,

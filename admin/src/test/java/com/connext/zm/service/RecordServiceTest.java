@@ -17,4 +17,8 @@ public class RecordServiceTest {
     public void send() {
         recordService.remoteControl(0);
     }
+    @Test
+    public void today(){
+        recordService.getToday().forEach(System.out::println);
+    }
 }

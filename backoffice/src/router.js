@@ -26,5 +26,10 @@ export default new Router({
             name: 'Useradd',
             component: () => import(/* webpackChunkName: "about" */ './views/addUser.vue')
         },
+        {
+            path: '/record',
+            name: 'record',
+            component: () => import(/* webpackChunkName: "about" */ './views/recordList.vue')
+        },
     ]
 })
