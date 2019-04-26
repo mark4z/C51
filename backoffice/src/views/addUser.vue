@@ -83,11 +83,11 @@
         methods: {
             onSubmit() {
                 var that = this;
-                var roles='';
+                var roles = '';
                 for (var i = 0; i < that.form.roles.length; i++) {
-                    if(i==0){
-                        roles +=that.form.roles[i]
-                    }else{
+                    if (i == 0) {
+                        roles += that.form.roles[i]
+                    } else {
                         roles += ',' + that.form.roles[i]
                     }
                 }
@@ -103,6 +103,12 @@
                     this.$notify({
                         title: '添加成功',
                         message: h('i', {style: 'color: teal'}, '添加用户' + that.form.username + '成功！')
+                    });
+                }).catch(() => {
+                    const h = this.$createElement;
+                    this.$notify({
+                        title: '添加失败',
+                        message: h('i', {style: 'color: teal'}, '添加用户' + that.form.username + '失败！用户已经存在')
                     });
                 })
             }
