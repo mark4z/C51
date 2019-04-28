@@ -1,4 +1,4 @@
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -9,39 +9,90 @@
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
     <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/login.css">
+
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="/vue/ele.css">
+    <!-- 引入组件库 -->
+    <!-- 先引入 Vue -->
+    <script src="/vue/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="/vue/login.js"></script>
+    <script src="/vue/axios.min.js"></script>
+
 </head>
 <body>
-<div class="container">
+<div id="login" class="container">
     <div style="position: relative;top: 30px;">
         <h2 class="form-title">交通路口行人探测后台系统</h2>
     </div>
     <div class="">
         <form class="form inner" method="post" action="/login">
-            <div th:if="${session.SPRING_SECURITY_LAST_EXCEPTION}">
-                <div th:with="message=${session.SPRING_SECURITY_LAST_EXCEPTION.message}">
-                    <div th:if="${message}=='Bad credentials'" class="alert alert-danger" role="alert">用户名或密码错误!</div>
-                    <div th:if="${message}!='Bad credentials'" class="alert alert-danger" role="alert"
-                         th:text="${message}"></div>
-                </div>
-            </div>
+
             <div class="form-group form-group-lg">
                 <label for="username" class="sr-only">用户名</label>
-                <input type="text" id="username" name="username" class="form-control" placeholder="Username"
+                <input v-model="username" type="text" id="username" name="username" class="form-control"
+                       placeholder="Username"
                        required=""
                        autofocus="">
             </div>
             <div class="form-group">
                 <label for="password" class="sr-only">密码</label>
-                <input type="password" id="password" name="password" class="form-control" placeholder="Password"
+                <input v-model="password" type="password" id="password" name="password" class="form-control"
+                       placeholder="Password"
                        required="">
             </div>
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" name="remember-me"> 记住我
+                    <input type="checkbox" v-model="isRemenber" id="isRemenber" name="remember-me"> 记住我
                 </label>
             </div>
-            <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+            <button @click="submit()" class="btn btn-lg btn-primary btn-block" id="submit" type="button">登录</button>
         </form>
     </div>
+</div>
 </body>
 </html>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    // this.$message.error('用户名或密码错误！');
+    var vue = new Vue({
+        el: '#login',
+        data: {
+            username: window.localStorage.getItem('username'),
+            password: window.localStorage.getItem('password'),
+            isRemenber: false
+        },
+        created: function () {
+
+        },
+        methods: {
+            submit: function () {
+                var that = this
+                that.save()
+                axios.post("/login?username=" + this.username + "&password=" + this.password + "&remember-me=" + this.isRemenber)
+                    .then(function (value) {
+                        if (value.data == "Access") {
+                            window.location.href = "/"
+                        } else {
+                            if (value === "Bad credentials")
+                                that.$message.error("用户名或密码错误！");
+                            else
+                                that.$message.error(value.data);
+                        }
+                    })
+            },
+            save: function () {
+                /*判断用户是否选择记住用户名*/
+                if (this.isRemenber== true) {
+                    /*存储数据到localstorage*/
+                    window.localStorage.setItem('username', this.username);
+                    window.localStorage.setItem('password', this.password);
+                } else {
+                    window.localStorage.removeItem('username');
+                    window.localStorage.removeItem('password');
+                }
+            }
+        }
+    })
+</script>

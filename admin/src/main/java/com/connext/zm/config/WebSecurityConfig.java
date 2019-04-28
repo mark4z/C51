@@ -17,41 +17,56 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
-/**
- * @Author: Marcus
- * @Date: 2018/12/21 10:18
- * @Version 1.0
- */
+/** @Author: Marcus @Date: 2018/12/21 10:18 @Version 1.0 */
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    private final UserDetailServiceImpl userDetailService;
+  private final UserDetailServiceImpl userDetailService;
 
-    @Autowired
-    public WebSecurityConfig(UserDetailServiceImpl userDetailService) {
-        this.userDetailService = userDetailService;
-    }
+  @Autowired
+  public WebSecurityConfig(UserDetailServiceImpl userDetailService) {
+    this.userDetailService = userDetailService;
+  }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailService).passwordEncoder(new BCryptPasswordEncoder());
-    }
+  @Override
+  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    auth.userDetailsService(userDetailService).passwordEncoder(new BCryptPasswordEncoder());
+  }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/css/**", "/js/**","/images/**")
-                .permitAll()
-                .antMatchers("/login")
-                .permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .formLogin().loginPage("/login")
-                .and()
-                .rememberMe()
-                .and()
-                .logout();
-    }
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http.csrf()
+        .disable()
+        .authorizeRequests()
+        .antMatchers("/css/**", "/js/**", "/images/**", "/vue/**")
+        .permitAll()
+        .antMatchers("/login")
+        .permitAll()
+        .anyRequest()
+        .authenticated()
+        .and()
+        .formLogin()
+        .loginPage("/login")
+        .successHandler(
+            (httpServletRequest, httpServletResponse, authentication) -> {
+              httpServletResponse.setContentType("application/json;charset=utf-8");
+              PrintWriter out = httpServletResponse.getWriter();
+              out.write("Access");
+              out.flush();
+              out.close();
+            })
+        .failureHandler(
+            (httpServletRequest, httpServletResponse, e) -> {
+              httpServletResponse.setContentType("application/json;charset=utf-8");
+              PrintWriter out = httpServletResponse.getWriter();
+              out.write(e.getMessage());
+              out.flush();
+              out.close();
+            })
+        .and()
+        .rememberMe()
+        .and()
+        .logout();
+  }
 }

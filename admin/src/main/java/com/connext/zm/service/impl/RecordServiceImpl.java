@@ -35,7 +35,7 @@ public class RecordServiceImpl implements RecordService {
 
     @Override
     public Page<Record> getAllByPage(Integer page) {
-        return recordRepository.findAll(new PageRequest(page,10));
+        return recordRepository.findAllByOrderByTimeDesc(new PageRequest(page,10));
     }
 
     @Override

@@ -1,9 +1,9 @@
 <template>
-    <el-form ref="form" :model="form" label-width="80px">
-        <el-form-item label="用户名">
+    <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="用户名" prop="username">
             <el-input v-model="form.username"></el-input>
         </el-form-item>
-        <el-form-item label="密码">
+        <el-form-item label="密码" prop="password">
             <el-input v-model="form.password"></el-input>
         </el-form-item>
         <el-form-item label="创建时间">
@@ -15,12 +15,12 @@
                     :picker-options="pickerOptions1">
             </el-date-picker>
         </el-form-item>
-        <el-form-item label="选择权限">
+        <el-form-item label="选择权限" prop="roles">
             <el-transfer :titles="['可用权限', '权限']" v-model="form.roles" :data="role_data"></el-transfer>
         </el-form-item>
         <el-form-item>
-            <el-button type="primary" @click="onSubmit">立即创建</el-button>
-            <el-button>取消</el-button>
+            <el-button type="primary" @click="onSubmit('form')">立即创建</el-button>
+            <el-button @click="go('/user')">取消</el-button>
         </el-form-item>
     </el-form>
 </template>
@@ -36,6 +36,19 @@
                     password: '',
                     time: '',
                     roles: [],
+                },
+                rules: {
+                    username: [
+                        {required: true, message: '请输入用户名', trigger: 'blur'},
+                        {min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur'}
+                    ],
+                    password: [
+                        {required: true, message: '请输入密码', trigger: 'blur'},
+                        {min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur'}
+                    ],
+                    roles: [
+                        {required: true, message: '请至少选择一个权限', trigger: 'change'},
+                    ],
                 },
                 pickerOptions1: {
                     shortcuts: [{
@@ -81,36 +94,47 @@
             }
         },
         methods: {
-            onSubmit() {
+            onSubmit(form) {
                 var that = this;
-                var roles = '';
-                for (var i = 0; i < that.form.roles.length; i++) {
-                    if (i == 0) {
-                        roles += that.form.roles[i]
+                this.$refs[form].validate((valid) => {
+                    if (valid) {
+                        var roles = '';
+                        for (var i = 0; i < that.form.roles.length; i++) {
+                            if (i == 0) {
+                                roles += that.form.roles[i]
+                            } else {
+                                roles += ',' + that.form.roles[i]
+                            }
+                        }
+                        const h = this.$createElement;
+                        {
+                            this.$axios.post(
+                                '/user/add',
+                                this.qs.stringify({
+                                    username: that.form.username,
+                                    password: that.form.password,
+                                    roles: roles
+                                }),
+                            ).then(() => {
+                                this.$notify({
+                                    title: '添加成功',
+                                    message: h('i', {style: 'color: teal'}, '添加用户' + that.form.username + '成功！')
+                                });
+                            }).catch(() => {
+                                this.$notify({
+                                    title: '添加失败',
+                                    message: h('i', {style: 'color: teal'}, '添加用户' + that.form.username + '失败！用户已经存在')
+                                });
+                            })
+                        }
                     } else {
-                        roles += ',' + that.form.roles[i]
+                        that.$message.error("请更正以下错误！");
+                        return false;
                     }
-                }
-                this.$axios.post(
-                    '/user/add',
-                    this.qs.stringify({
-                        username: that.form.username,
-                        password: that.form.password,
-                        roles: roles
-                    }),
-                ).then(() => {
-                    const h = this.$createElement;
-                    this.$notify({
-                        title: '添加成功',
-                        message: h('i', {style: 'color: teal'}, '添加用户' + that.form.username + '成功！')
-                    });
-                }).catch(() => {
-                    const h = this.$createElement;
-                    this.$notify({
-                        title: '添加失败',
-                        message: h('i', {style: 'color: teal'}, '添加用户' + that.form.username + '失败！用户已经存在')
-                    });
-                })
+                });
+            },
+            go(url) {
+                this.$router.push(url)
             }
         }
     }

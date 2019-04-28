@@ -24,6 +24,7 @@ public class MyCommandLineRunner implements CommandLineRunner, Ordered {
 
     @Override
     public void run(String... var1) throws Exception {
+        //TODO 端口号设置
         serialUtil.start("COM2");
     }
 }

@@ -30,12 +30,14 @@
             </el-table-column>
         </el-table>
         <el-dialog
-                title="提示"
+                title="编辑权限"
                 :visible.sync="dialogVisible"
                 width="46%">
-            <el-transfer :titles="['可用权限', '权限']" v-model="roles" :data="role_data"></el-transfer>
-            <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="handleClose()">确 定</el-button>
+            <el-transfer :titles="['可用权限', '已有权限']" v-model="roles" :data="role_data"></el-transfer>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="handleClose()">确 定</el-button>
+            </span>
         </el-dialog>
     </div>
 </template>
@@ -77,8 +79,11 @@
         },
         methods: {
             handleEdit(id) {
-                this.dialogVisible = true
                 this.now = id
+                this.axios.get('/user/'+id+'/roles').then((response) => {
+                    this.roles = response.data;
+                })
+                this.dialogVisible = true
             },
             handleClose() {
                 this.dialogVisible = false

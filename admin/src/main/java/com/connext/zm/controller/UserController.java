@@ -56,4 +56,12 @@ public class UserController {
     userService.setRole(username, roles);
     return "Success";
   }
+
+  @GetMapping("/{username}/roles")
+  public List<String> getRole(@PathVariable String username) {
+    List<String> roles = new ArrayList<>();
+    User user = userService.getUserById(username);
+    user.getAuthorities().forEach(i -> roles.add(i.getName()));
+    return roles;
+  }
 }

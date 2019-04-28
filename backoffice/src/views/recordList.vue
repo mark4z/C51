@@ -30,13 +30,13 @@
             }
         },
         created: function () {
-            this.axios.get('/record/page/1').then((response) => {
+            this.axios.get('/record/page/0').then((response) => {
                 this.tableData = response.data;
             })
         },
         methods: {
             Page(i) {
-                this.axios.get('/record/page/' + i).then((response) => {
+                this.axios.get('/record/page/' + (i-1)).then((response) => {
                     this.tableData = response.data;
                 })
             }

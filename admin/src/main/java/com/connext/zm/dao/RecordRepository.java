@@ -22,4 +22,6 @@ public interface RecordRepository extends CrudRepository<Record, Integer> {
     Page<Record> findAll(Pageable page);
 
     List<Record> findByTimeAfter(Date today);
+
+    Page<Record> findAllByOrderByTimeDesc(Pageable page);
 }

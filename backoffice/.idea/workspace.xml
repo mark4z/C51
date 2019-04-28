@@ -2,30 +2,38 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f0a3010e-a1b1-463b-8a76-6578e747caab" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../admin/src/main/resources/static/js/about.ae06ff41.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../admin/src/main/resources/static/js/about.ae06ff41.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../admin/src/main/resources/static/vue/axios.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../admin/src/main/resources/static/vue/ele.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../admin/src/main/resources/static/vue/fonts/element-icons.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../admin/src/main/resources/static/vue/fonts/element-icons.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../admin/src/main/resources/static/vue/login.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../admin/src/main/resources/static/vue/vue.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../admin/src/main/java/com/connext/zm/config/MyCommandLineRunner.java" beforeDir="false" afterPath="$PROJECT_DIR$/../admin/src/main/java/com/connext/zm/config/MyCommandLineRunner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../admin/src/main/java/com/connext/zm/config/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../admin/src/main/java/com/connext/zm/config/WebSecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../admin/src/main/java/com/connext/zm/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../admin/src/main/java/com/connext/zm/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../admin/src/main/resources/static/css/app.d5dd81f2.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../admin/src/main/java/com/connext/zm/dao/RecordRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../admin/src/main/java/com/connext/zm/dao/RecordRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../admin/src/main/java/com/connext/zm/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../admin/src/main/java/com/connext/zm/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../admin/src/main/java/com/connext/zm/service/impl/RecordServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../admin/src/main/java/com/connext/zm/service/impl/RecordServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../admin/src/main/java/com/connext/zm/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../admin/src/main/java/com/connext/zm/service/impl/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../admin/src/main/java/com/connext/zm/util/TwoWaySerialComm.java" beforeDir="false" afterPath="$PROJECT_DIR$/../admin/src/main/java/com/connext/zm/util/TwoWaySerialComm.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../admin/src/main/resources/static/css/login.css" beforeDir="false" afterPath="$PROJECT_DIR$/../admin/src/main/resources/static/css/login.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../admin/src/main/resources/static/fonts/element-icons.2fad952a.woff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../admin/src/main/resources/static/fonts/element-icons.6f0a7632.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../admin/src/main/resources/static/js/about.7a45c84c.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../admin/src/main/resources/static/js/about.7a45c84c.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../admin/src/main/resources/static/js/app.2615c2ce.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../admin/src/main/resources/static/js/app.2615c2ce.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../admin/src/main/resources/static/js/chunk-vendors.1068027b.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../admin/src/main/resources/static/js/chunk-vendors.1068027b.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../admin/src/main/resources/static/js/about.5a0a5b0f.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../admin/src/main/resources/static/js/about.5a0a5b0f.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../admin/src/main/resources/static/js/app.e20625ad.js" beforeDir="false" afterPath="$PROJECT_DIR$/../admin/src/main/resources/static/js/app.3b774aff.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../admin/src/main/resources/static/js/app.e20625ad.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/../admin/src/main/resources/static/js/app.3b774aff.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../admin/src/main/resources/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../admin/src/main/resources/templates/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../admin/src/main/resources/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/../admin/src/main/resources/templates/login.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/css/app.d5dd81f2.css" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/dist/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/js/about.7a45c84c.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/js/about.7a45c84c.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/js/app.2615c2ce.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/js/app.2615c2ce.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/js/chunk-vendors.1068027b.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/js/chunk-vendors.1068027b.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/js/chunk-vendors.1068027b.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/dist/js/chunk-vendors.1068027b.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/js/about.5a0a5b0f.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/js/about.5a0a5b0f.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/js/app.e20625ad.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/js/app.e20625ad.js.map" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/addUser.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/addUser.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/recordList.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/recordList.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/user.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/user.vue" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/dist/" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -38,12 +46,40 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="true">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/views/addUser.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="278">
-              <caret line="112" column="18" selection-start-line="112" selection-start-column="18" selection-end-line="112" selection-end-column="18" />
+            <state relative-caret-position="298">
+              <caret line="23" column="23" selection-start-line="23" selection-start-column="23" selection-end-line="23" selection-end-column="23" />
+              <folding>
+                <element signature="e#1135#3463#0" />
+                <element signature="e#3482#5361#0" />
+                <element signature="e#3599#5259#0" />
+                <element signature="e#3632#5117#0" />
+                <element signature="n#style#0;n#!!top" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/views/user.vue">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="380">
+              <caret line="39" column="19" selection-start-line="39" selection-start-column="19" selection-end-line="39" selection-end-column="19" />
+              <folding>
+                <element signature="n#el-table-column#0;n#el-table#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="n#el-table-column#2;n#el-table#0;n#div#0;n#template#0;n#!!top" />
+                <element signature="e#1721#1808#0" />
+                <element signature="e#1830#1929#0" />
+                <element signature="e#1931#2032#0" />
+                <element signature="e#2054#2153#0" />
+                <element signature="e#2175#2273#0" />
+                <element signature="e#2628#3465#0" />
+                <element signature="e#2795#2999#0" />
+                <element signature="e#3496#3971#0" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -59,11 +95,12 @@
         <option value="$PROJECT_DIR$/../nginx-1.15.9/conf/nginx.conf" />
         <option value="$PROJECT_DIR$/src/views/Home.vue" />
         <option value="$PROJECT_DIR$/src/router.js" />
-        <option value="$PROJECT_DIR$/src/views/user.vue" />
-        <option value="$PROJECT_DIR$/src/components/menu_left.vue" />
-        <option value="$PROJECT_DIR$/src/views/recordList.vue" />
         <option value="$PROJECT_DIR$/dist/index.html" />
+        <option value="$PROJECT_DIR$/../../nginx-1.14.2/conf/nginx.conf" />
+        <option value="$PROJECT_DIR$/src/views/recordList.vue" />
         <option value="$PROJECT_DIR$/src/views/addUser.vue" />
+        <option value="$PROJECT_DIR$/src/components/menu_left.vue" />
+        <option value="$PROJECT_DIR$/src/views/user.vue" />
       </list>
     </option>
   </component>
@@ -101,6 +138,12 @@
               <item name="backoffice" type="b2602c69:ProjectViewProjectNode" />
               <item name="backoffice" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="backoffice" type="b2602c69:ProjectViewProjectNode" />
+              <item name="backoffice" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="views" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -117,7 +160,7 @@
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.path.for.package.standard" value="project" />
-    <property name="node.js.selected.package.eslint" value="$PROJECT_DIR$/../../../../../c/Desktop/zm/backoffice/node_modules/eslint" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.standard" value="" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -163,11 +206,12 @@
       <updated>1553935390544</updated>
       <workItem from="1553935393551" duration="5070000" />
       <workItem from="1556269198630" duration="1949000" />
+      <workItem from="1556421873989" duration="7196000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7019000" />
+    <option name="totallyTimeSpent" value="14215000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1320" height="784" extended-state="6" />
@@ -186,7 +230,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="10" visible="true" weight="0.3353846" />
+      <window_info anchor="bottom" id="Terminal" order="10" weight="0.3353846" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -220,32 +264,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/user.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="56" column="34" selection-start-line="56" selection-start-column="30" selection-end-line="56" selection-end-column="34" />
-          <folding>
-            <element signature="n#el-table-column#0;n#el-table#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#el-table-column#2;n#el-table#0;n#div#0;n#template#0;n#!!top" />
-            <element signature="n#el-dialog#0;n#div#0;n#template#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/recordList.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="21" column="11" lean-forward="true" selection-start-line="21" selection-start-column="11" selection-end-line="21" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/menu_left.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="928">
-          <caret line="74" column="28" lean-forward="true" selection-start-line="74" selection-start-column="28" selection-end-line="74" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/dist/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="247">
@@ -270,10 +288,60 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../../nginx-1.14.2/conf/nginx.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="304">
+          <caret line="49" column="57" selection-start-line="49" selection-start-column="57" selection-end-line="49" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/recordList.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="283">
+          <caret line="32" column="42" selection-start-line="32" selection-start-column="42" selection-end-line="32" selection-end-column="42" />
+          <folding>
+            <element signature="n#el-table#0;n#div#0;n#template#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/menu_left.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="27" column="25" selection-start-line="27" selection-start-column="21" selection-end-line="27" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/views/addUser.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="278">
-          <caret line="112" column="18" selection-start-line="112" selection-start-column="18" selection-end-line="112" selection-end-column="18" />
+        <state relative-caret-position="298">
+          <caret line="23" column="23" selection-start-line="23" selection-start-column="23" selection-end-line="23" selection-end-column="23" />
+          <folding>
+            <element signature="e#1135#3463#0" />
+            <element signature="e#3482#5361#0" />
+            <element signature="e#3599#5259#0" />
+            <element signature="e#3632#5117#0" />
+            <element signature="n#style#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/user.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="39" column="19" selection-start-line="39" selection-start-column="19" selection-end-line="39" selection-end-column="19" />
+          <folding>
+            <element signature="n#el-table-column#0;n#el-table#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="n#el-table-column#2;n#el-table#0;n#div#0;n#template#0;n#!!top" />
+            <element signature="e#1721#1808#0" />
+            <element signature="e#1830#1929#0" />
+            <element signature="e#1931#2032#0" />
+            <element signature="e#2054#2153#0" />
+            <element signature="e#2175#2273#0" />
+            <element signature="e#2628#3465#0" />
+            <element signature="e#2795#2999#0" />
+            <element signature="e#3496#3971#0" />
+          </folding>
         </state>
       </provider>
     </entry>
