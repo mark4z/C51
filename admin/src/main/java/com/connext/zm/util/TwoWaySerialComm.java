@@ -17,124 +17,119 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * This version of the TwoWaySerialComm example makes use of the
- * SerialPortEventListener to avoid polling.
+ * This version of the TwoWaySerialComm example makes use of the SerialPortEventListener to avoid
+ * polling.
  */
 @Component
 public class TwoWaySerialComm {
 
-    SerialPort port;
-    @Autowired
-    private final RecordService recordService;
+  SerialPort port;
+  @Autowired private final RecordService recordService;
 
-    private final static Logger logger = LoggerFactory.getLogger(TwoWaySerialComm.class);
+  private static final Logger logger = LoggerFactory.getLogger(TwoWaySerialComm.class);
 
-    public TwoWaySerialComm(RecordService recordService) {
-        this.recordService = recordService;
+  public TwoWaySerialComm(RecordService recordService) {
+    this.recordService = recordService;
+  }
+
+  void connect(String portName) throws Exception {
+    CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
+    if (portIdentifier.isCurrentlyOwned()) {
+      System.out.println("Error: Port is currently in use");
+    } else {
+      CommPort commPort = portIdentifier.open(this.getClass().getName(), 2000);
+
+      if (commPort instanceof SerialPort) {
+        SerialPort serialPort = (SerialPort) commPort;
+        // TODO 波特率设置
+        serialPort.setSerialPortParams(
+            9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+
+        InputStream in = serialPort.getInputStream();
+        OutputStream out = serialPort.getOutputStream();
+
+        // (new Thread(new SerialWriter(out))).start();
+
+        serialPort.addEventListener(new SerialReader(in));
+        serialPort.notifyOnDataAvailable(true);
+        this.port = serialPort;
+
+      } else {
+        System.out.println("Error: Only serial ports are handled by this example.");
+      }
+    }
+  }
+
+  /**
+   * Handles the input coming from the serial port. A new line character is treated as the end of a
+   * block in this example.
+   */
+  public class SerialReader implements SerialPortEventListener {
+    private InputStream in;
+    private byte[] buffer = new byte[1];
+
+    public SerialReader(InputStream in) {
+      this.in = in;
     }
 
+    public void serialEvent(SerialPortEvent arg0) {
+      int data;
 
-    void connect(String portName) throws Exception {
-        CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
-        if (portIdentifier.isCurrentlyOwned()) {
-            System.out.println("Error: Port is currently in use");
-        } else {
-            CommPort commPort = portIdentifier.open(this.getClass().getName(), 2000);
-
-            if (commPort instanceof SerialPort) {
-                SerialPort serialPort = (SerialPort) commPort;
-                //TODO 波特率设置
-                serialPort.setSerialPortParams(9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
-
-                InputStream in = serialPort.getInputStream();
-                OutputStream out = serialPort.getOutputStream();
-
-                //(new Thread(new SerialWriter(out))).start();
-
-                serialPort.addEventListener(new SerialReader(in));
-                serialPort.notifyOnDataAvailable(true);
-                this.port = serialPort;
-
-            } else {
-                System.out.println("Error: Only serial ports are handled by this example.");
-            }
+      try {
+        int len = 0;
+        while ((data = in.read()) > -1) {
+          if (data == '\n') {
+            break;
+          }
+          buffer[len++] = (byte) data;
         }
+        logger.info("当前有" + bytesToIntString(buffer) + "个行人经过！");
+        Record record = new Record();
+        record.setNum(Integer.parseInt(bytesToIntString(buffer)));
+        record.setOrientation(recordService.getOrientation());
+        recordService.insert(record);
+      } catch (IOException e) {
+        e.printStackTrace();
+        System.exit(-1);
+      }
     }
+  }
 
-    /**
-     * Handles the input coming from the serial port. A new line character
-     * is treated as the end of a block in this example.
-     */
-    public class SerialReader implements SerialPortEventListener {
-        private InputStream in;
-        private byte[] buffer = new byte[1];
-
-        public SerialReader(InputStream in) {
-            this.in = in;
-        }
-
-        public void serialEvent(SerialPortEvent arg0) {
-            int data;
-
-            try {
-                int len = 0;
-                while ((data = in.read()) > -1) {
-                    if (data == '\n') {
-                        break;
-                    }
-                    buffer[len++] = (byte) data;
-                }
-                logger.info("当前有" + bytesToIntString(buffer) + "个行人经过！");
-                Record record = new Record();
-                record.setNum(Integer.parseInt(bytesToIntString(buffer)));
-                //SpringUtil.getBean(RecordService.class).insert(record);
-                recordService.insert(record);
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.exit(-1);
-            }
-        }
-
+  /** */
+  private String bytesToIntString(byte[] src) {
+    StringBuilder stringBuilder = new StringBuilder("");
+    if (src == null || src.length <= 0) {
+      return null;
     }
-
-    /**
-     *
-     */
-
-    private String bytesToIntString(byte[] src) {
-        StringBuilder stringBuilder = new StringBuilder("");
-        if (src == null || src.length <= 0) {
-            return null;
-        }
-        for (int i = 0; i < src.length; i++) {
-            int v = src[i] & 0xFF;
-            String hv = Integer.toHexString(v);
-            if (hv.length() < 2) {
-                stringBuilder.append(0);
-            }
-            stringBuilder.append(hv);
-        }
-        return String.valueOf(Integer.parseInt(stringBuilder.toString(), 16));
+    for (int i = 0; i < src.length; i++) {
+      int v = src[i] & 0xFF;
+      String hv = Integer.toHexString(v);
+      if (hv.length() < 2) {
+        stringBuilder.append(0);
+      }
+      stringBuilder.append(hv);
     }
+    return String.valueOf(Integer.parseInt(stringBuilder.toString(), 16));
+  }
 
-    void sendData(byte data) {
-        OutputStream os = null;
-        SerialPort serialPort = this.port;
-        try {
-            os = serialPort.getOutputStream();//获得串口的输出流
-            os.write(data);
-            os.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (os != null) {
-                    os.close();
-                    os = null;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+  void sendData(byte data) {
+    OutputStream os = null;
+    SerialPort serialPort = this.port;
+    try {
+      os = serialPort.getOutputStream(); // 获得串口的输出流
+      os.write(data);
+      os.flush();
+    } catch (IOException e) {
+      e.printStackTrace();
+    } finally {
+      try {
+        if (os != null) {
+          os.close();
+          os = null;
         }
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
+  }
 }

@@ -8,6 +8,10 @@
                     label="时间">
             </el-table-column>
             <el-table-column
+                    prop="orientation"
+                    label="方向">
+            </el-table-column>
+            <el-table-column
                     prop="num"
                     label="人数">
             </el-table-column>

@@ -12,6 +12,10 @@
                     prop="time"
                     label="创建时间">
             </el-table-column>
+            <el-table-column
+                    prop="modifiedTime"
+                    label="上次修改时间">
+            </el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
                     <el-button

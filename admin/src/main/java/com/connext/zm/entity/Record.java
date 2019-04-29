@@ -15,16 +15,9 @@ public class Record {
     @CreatedDate
     private Date time;
 
-    private int num;
+    private String orientation;
 
-    @Override
-    public String toString() {
-        return "Record{" +
-                "id=" + id +
-                ", time=" + time +
-                ", num=" + num +
-                '}';
-    }
+    private int num;
 
     public Integer getId() {
         return id;
@@ -40,6 +33,14 @@ public class Record {
 
     public void setTime(Date time) {
         this.time = time;
+    }
+
+    public String getOrientation() {
+        return orientation;
+    }
+
+    public void setOrientation(String orientation) {
+        this.orientation = orientation;
     }
 
     public int getNum() {
