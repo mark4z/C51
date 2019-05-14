@@ -288,7 +288,7 @@ void LED_light() //倒计时
 }
 void adjustment() //根据人数调整绿灯时间
 {
-			delay_sec += (sensor1_num + sensor2_num) / 3;
+	if (SN_or_EW) {delay_sec += sensor1_num / 3;}else{delay_sec += sensor2_num / 3;}
 		  delay_sec=(delay_sec>10)? 10 :delay_sec;
 	if (SN_or_EW) {
 			SN_time_adj+=delay_sec;
